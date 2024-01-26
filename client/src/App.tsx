@@ -5,12 +5,10 @@ import { Heading, Text, Box, Flex, Button, Stack } from "@chakra-ui/react";
 function App() {
 
   const handleClick = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
     const userData = {
-      lists: [],
-      name: 'batman',
-      email: 'batman@gmail.com',
-      password: 'abc123',
+      name: 'Robin',
+      email: 'robin@gmail.com',
+      password: 'dw40',
       signedIn: false
     };
     postButtonTest(userData);

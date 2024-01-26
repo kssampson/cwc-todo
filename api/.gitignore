@@ -1,6 +1,19 @@
-# dependencies
+# Dependency directories
 /node_modules
 
+# Compiled output
+/dist
 
-# misc
+# TypeScript build configuration
+/tsconfig.build.json
+
+# Dependency lock file
+package-lock.json
+
+# IDE and editor files
+.vscode
+.idea
+
+# Miscellaneous
+.DS_Store
 .env
