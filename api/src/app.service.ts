@@ -6,5 +6,3 @@ export class AppService {
     return 'Hello World!';
   }
 }
-
-//service is like our models - intercting with database

@@ -4,23 +4,28 @@ import { User } from './user.entity';
 // import AppDataSource from 'db';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateUserDto } from './dto/createUserDto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
 constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
 
-  findOne(id:string) {
-    return {
-      id: id
-    }
+  async findOne(id: number) {
+    return await this.userRepo.findOne({ where : { id: id } });
   }
 
   async create(createUserDto: CreateUserDto) {
-    // const userRepository = AppDataSource.getRepository(User);
-    console.log('inside create user.service.ts', createUserDto)
     const hashedPass = await bcrypt.hash(createUserDto.password, 10);
     createUserDto.password = hashedPass;
-    await this.userRepo.insert(createUserDto);
+    return await this.userRepo.insert(createUserDto);
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto){
+    return await this.userRepo.update(id, updateUserDto)
+  }
+
+  async delete(id: number) {
+    return await this.userRepo.delete(id);
   }
 }

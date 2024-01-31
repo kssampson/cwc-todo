@@ -6,9 +6,9 @@ function App() {
 
   const handleClick = (e: { preventDefault: () => void; }) => {
     const userData = {
-      name: 'hobgoblin',
-      email: 'hobgoblin@gmail.com',
-      password: 'evil123',
+      name: 'Green Goblin',
+      email: 'greengoblin@gmail.com',
+      password: 'green123',
       signedIn: false
     };
     postButtonTest(userData);
