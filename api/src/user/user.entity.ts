@@ -1,5 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 import { List } from "src/list/list.entity"
+// import * as bcrypt from 'bcrypt';
 
 @Entity("users")
 export class User {
@@ -18,6 +19,12 @@ export class User {
 
   @Column({nullable: false})
   password: string
+
+  // @BeforeInsert()
+  // async hashPassword(){
+  //   console.log('inside hash in user entity')
+  //   this.password = await bcrypt.hash(this.password, 10);
+  // }
 
   @Column()
   signedIn: boolean
