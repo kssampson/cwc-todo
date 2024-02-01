@@ -8,8 +8,9 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
 
   constructor(private readonly userService: UserService, private jwtService: JwtService ){}
-  async validateUser(username:string, password:string) {
-    const user = await this.userService.findOneWithUserName(username);
+
+  async validateUser(name: string, password: string) {
+    const user = await this.userService.findOneWithUserName(name);
     if (user && (await bcrypt.compare(password, user.password))) {
       const { password, ...result } = user;
       return result;
@@ -20,6 +21,7 @@ export class AuthService {
   async login(user: User) {
     const payload = {
       name: user.name,
+      email: user.email,
       sub: {
         name: user.name
       },
