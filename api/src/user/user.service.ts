@@ -15,6 +15,10 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
     return await this.userRepo.findOne({ where : { id: id } });
   }
 
+  async findOneWithUserName(name: string) {
+    return await this.userRepo.findOne( { where: {name: name} })
+  }
+
   async create(createUserDto: CreateUserDto) {
     const hashedPass = await bcrypt.hash(createUserDto.password, 10);
     createUserDto.password = hashedPass;
