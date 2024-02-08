@@ -17,3 +17,4 @@ package-lock.json
 # Miscellaneous
 .DS_Store
 .env
+/src/auth/constants.ts
