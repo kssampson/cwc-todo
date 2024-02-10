@@ -13,4 +13,8 @@ const isValidPassword = (password: string) => {
   return password.length >= 8 ? true : false;
 }
 
-export const validateInputs = { isValidEmail, isValidName, isValidPassword };
+const isValidSecondPassword = (password: string, secondPassword: string) => {
+  return password === secondPassword && isValidPassword(secondPassword) ? true : false;
+}
+
+export const validateInputs = { isValidEmail, isValidName, isValidPassword, isValidSecondPassword };
