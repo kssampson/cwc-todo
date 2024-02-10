@@ -1,7 +1,7 @@
-import { Box, FormControl, Text, Heading, Input, Stack, VStack, Button, FormLabel, FormErrorMessage } from "@chakra-ui/react"
+import { Box, FormControl, Heading, Input, Stack, VStack, Button, FormLabel, FormErrorMessage } from "@chakra-ui/react"
 import { useState } from 'react';
-import isValidEmail from "../utils/isValidEmail";
-// import { create } from "domain";
+import { validateInputs }  from "../utils/validateInputs";
+import createUserSubmit from "../utils/createUserSubmit";
 
 const SignUp = () => {
 
@@ -13,9 +13,9 @@ const SignUp = () => {
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [passwordSubmitted, setPasswordSubmitted] = useState(false);
 
-  const isErrorName = name === "" && nameSubmitted;
-  const isErrorEmail = !isValidEmail(email) && emailSubmitted;
-  const isErrorPassword = password === "" && passwordSubmitted;
+  const isErrorName = !validateInputs.isValidName(name) && nameSubmitted;
+  const isErrorEmail = !validateInputs.isValidEmail(email) && emailSubmitted;
+  const isErrorPassword = !validateInputs.isValidPassword(password) && passwordSubmitted;
 
   const onChangeName = (e: any) => {
     setNameSubmitted(false);
@@ -32,19 +32,22 @@ const SignUp = () => {
     setPassword(e.target.value);
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     setNameSubmitted(true);
     setEmailSubmitted(true);
     setPasswordSubmitted(true);
-    if (isErrorName || isErrorEmail || isErrorPassword) {
-      console.log("data entry error")
+    if (!validateInputs.isValidName(name) || !validateInputs.isValidEmail(email) || !validateInputs.isValidPassword(password)) {
+      // console.log("data entry error")
       return;
     } else {
-      // await createUserSubmit({name: name, email: email, password: password, signedIn: false})
-      // setName("");
-      // setEmail("");
-      // setPassword("");
-      console.log('no errors, continue with call to api')
+      await createUserSubmit({name: name, email: email, password: password, signedIn: false})
+      setName("");
+      setEmail("");
+      setPassword("");
+      setNameSubmitted(false);
+      setEmailSubmitted(false);
+      setPasswordSubmitted(false);
+      // console.log('no errors, continue with call to api')
     }
   }
 
