@@ -1,4 +1,4 @@
-import { Box, FormControl, Heading, Input, Stack, VStack, Button, FormLabel, FormErrorMessage } from "@chakra-ui/react"
+import { Box, FormControl, Heading, Input, Stack, VStack, Button, FormLabel, FormErrorMessage, useToast } from "@chakra-ui/react"
 import { useState } from 'react';
 import { validateInputs }  from "../utils/validateInputs";
 import createUserSubmit from "../utils/createUserSubmit";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 const SignUp = () => {
 
   const Navigate = useNavigate();
+  const toast = useToast();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -56,7 +57,15 @@ const SignUp = () => {
       const token = await login({username: name, password: password});
       localStorage.setItem('token: ', token);
 
-      Navigate("/projects")
+      toast({
+        title: `Account created. You are now logged in as ${name}`,
+        position: "top-right",
+        description: `Welcome ${name}!`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+
       setName("");
       setEmail("");
       setPassword("");
@@ -65,6 +74,8 @@ const SignUp = () => {
       setEmailSubmitted(false);
       setPasswordSubmitted(false);
       setSecondPasswordSubmitted(false);
+
+      Navigate("/projects")
     }
   }
 
