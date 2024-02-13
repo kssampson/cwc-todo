@@ -19,7 +19,4 @@ export class User {
   @Column({nullable: false})
   password: string
 
-  @Column()
-  signedIn: boolean
-
 }

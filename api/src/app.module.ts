@@ -9,19 +9,19 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { Todos } from './todos/todos.entity';
 import { List } from './list/list.entity';
-require ('dotenv').config();
+import { ConfigService, ConfigModule } from '@nestjs/config'
+import typeorm from './config/typeorm';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-    type: "postgres",
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.PORT),
-    username: process.env.USER_NAME,
-    password: process.env.PASSWORD,
-    database: process.env.DB_NAME,
-    entities: [User, List, Todos],
-    synchronize: true}),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [typeorm]
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => (configService.get('typeorm'))
+    }),
     TodosModule,
     UserModule,
     ListModule,
