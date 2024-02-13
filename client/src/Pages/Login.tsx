@@ -36,23 +36,39 @@ const Login = () => {
     if (!validateInputs.isValidName(name) || !validateInputs.isValidPassword(password)) {
       return;
     } else {
-      const token = await login({username: name, password: password})
-      localStorage.setItem("token: ", token);
-      toast({
-        title: 'Account created.',
-        position: "top-right",
-        description: `Welcome ${name}!`,
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+      await login({username: name, password: password})
+      .then((response) => {
+        const token = response;
+        localStorage.setItem("token: ", token);
+        toast({
+          title: 'Login successful.',
+          position: "top-right",
+          description: `Welcome ${name}!`,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        })
+        setName("");
+        setPassword("");
+        setNameSubmitted(false);
+        setPasswordSubmitted(false);
+
+        Navigate("/projects")
       })
-
-      setName("");
-      setPassword("");
-      setNameSubmitted(false);
-      setPasswordSubmitted(false);
-
-      Navigate("/projects")
+      .catch((error) => {
+        toast({
+          title: 'Error logging in. Please try again.',
+          position: "top-right",
+          description: `${error}`,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        })
+        setName("");
+        setPassword("");
+        setNameSubmitted(false);
+        setPasswordSubmitted(false);
+      })
     }
   }
 
