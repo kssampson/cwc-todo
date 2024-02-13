@@ -2,8 +2,12 @@ import { Box, FormControl, Heading, Input, Stack, VStack, Button, FormLabel, For
 import { useState } from 'react';
 import { validateInputs }  from "../utils/validateInputs";
 import createUserSubmit from "../utils/createUserSubmit";
+import login from "../utils/login";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+
+  const Navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -48,7 +52,11 @@ const SignUp = () => {
     if (!validateInputs.isValidName(name) || !validateInputs.isValidEmail(email) || !validateInputs.isValidPassword(password) || !validateInputs.isValidSecondPassword(password, secondPassword)) {
       return;
     } else {
-      await createUserSubmit({name: name, email: email, password: password, signedIn: false})
+      await createUserSubmit({name: name, email: email, password: password, signedIn: false});
+      const token = await login({username: name, password: password});
+      localStorage.setItem('token: ', token);
+
+      Navigate("/projects")
       setName("");
       setEmail("");
       setPassword("");
