@@ -25,8 +25,6 @@ export class AuthService {
         name: user.name
       },
     };
-    // console.log(payload)
-    // console.log(process.env.JWT_SECRET)
     return {
       ...user,
       accessToken: this.jwtService.sign(payload),
