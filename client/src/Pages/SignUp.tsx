@@ -2,7 +2,6 @@ import { Box, FormControl, Heading, Input, Stack, VStack, Button, FormLabel, For
 import { useState } from 'react';
 import { validateInputs }  from "../utils/validateInputs";
 import createUserSubmit from "../utils/createUserSubmit";
-import login from "../utils/login";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
@@ -53,29 +52,45 @@ const SignUp = () => {
     if (!validateInputs.isValidName(name) || !validateInputs.isValidEmail(email) || !validateInputs.isValidPassword(password) || !validateInputs.isValidSecondPassword(password, secondPassword)) {
       return;
     } else {
-      await createUserSubmit({name: name, email: email, password: password, signedIn: false});
-      const token = await login({username: name, password: password});
-      localStorage.setItem('token: ', token);
+      await createUserSubmit({name: name, email: email, password: password, signedIn: false})
+      .then(() => {
+        toast({
+          title: `Account created. Please log in.}`,
+          position: "top-right",
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        })
+        setName("");
+        setEmail("");
+        setPassword("");
+        setSecondPassword("");
+        setNameSubmitted(false);
+        setEmailSubmitted(false);
+        setPasswordSubmitted(false);
+        setSecondPasswordSubmitted(false);
 
-      toast({
-        title: `Account created. You are now logged in as ${name}`,
-        position: "top-right",
-        description: `Welcome ${name}!`,
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+        Navigate("/log-in")
       })
-
-      setName("");
-      setEmail("");
-      setPassword("");
-      setSecondPassword("");
-      setNameSubmitted(false);
-      setEmailSubmitted(false);
-      setPasswordSubmitted(false);
-      setSecondPasswordSubmitted(false);
-
-      Navigate("/projects")
+      .catch((error) =>{
+        toast({
+          title: `Error creating account. Error: ${error}`,
+          position: "top-right",
+          description: `Please try again`,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        })
+        setName("");
+        setEmail("");
+        setPassword("");
+        setSecondPassword("");
+        setNameSubmitted(false);
+        setEmailSubmitted(false);
+        setPasswordSubmitted(false);
+        setSecondPasswordSubmitted(false);
+        console.error();
+      })
     }
   }
 

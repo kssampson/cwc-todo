@@ -6,6 +6,7 @@ const login = async (userData: object) => {
     return response.data.accessToken;
   } catch(error){
     console.log('Failed on front end: ', error)
+    throw error;
   }
 }
 
