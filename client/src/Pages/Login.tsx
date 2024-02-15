@@ -2,12 +2,14 @@ import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, 
 import { useState } from "react";
 import { validateInputs } from "../utils/validateInputs";
 import login from "../utils/login";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { Context } from "../App";
 
 
 const Login = () => {
 
   const Navigate = useNavigate();
+  const context = useOutletContext() as Context;
   const toast = useToast();
 
   const [name, setName] = useState("");
@@ -39,6 +41,7 @@ const Login = () => {
       await login({username: name, password: password})
       .then((response) => {
         const token = response;
+        context.toggleLoggedIn();
         localStorage.setItem("token", token);
         localStorage.setItem('name', name);
         toast({

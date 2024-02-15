@@ -1,18 +1,20 @@
 import { Box, Button, Heading, VStack, useToast } from "@chakra-ui/react"
-import { useEffect, useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useLoaderData, useNavigate, useOutletContext } from "react-router-dom";
+import { Context } from "../App";
 
 
 const Profile = () => {
 
   const Navigate = useNavigate();
+  const context = useOutletContext() as Context
   const toast = useToast();
-
   const data = useLoaderData();
   const [userData, setUserData] = useState(data);
 
   const logOut = () => {
     localStorage.removeItem("token");
+    context.toggleLoggedIn();
 
     Navigate("/log-in");
     toast({
@@ -24,7 +26,7 @@ const Profile = () => {
       isClosable: true,
     })
   }
-  console.log("userData State: ", userData)
+
   return (
     <Box>
       <VStack>
