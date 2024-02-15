@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateUserDto } from './dto/createUserDto';
 import * as bcrypt from 'bcrypt';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,11 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
 
   async findOne(id: number) {
     return await this.userRepo.findOne({ where : { id: id } });
+  }
+
+  async findOneWithEmail(email: string) {
+    return await this.userRepo.findOneOrFail( { where: {email: email} })
+    // return "monkey"
   }
 
   async findOneWithUserName(name: string) {
