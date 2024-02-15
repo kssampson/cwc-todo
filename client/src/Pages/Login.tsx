@@ -39,7 +39,8 @@ const Login = () => {
       await login({username: name, password: password})
       .then((response) => {
         const token = response;
-        localStorage.setItem("token: ", token);
+        localStorage.setItem("token", token);
+        localStorage.setItem('name', name);
         toast({
           title: 'Login successful.',
           position: "top-right",

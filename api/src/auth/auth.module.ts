@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/user/user.entity';
 import { JwtService, JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategies/local-strategy';
-import { JwtStrategy } from './strategies/jwt-strategy';
+// import { JwtStrategy } from './strategies/jwt-strategy';
 import { UserModule } from 'src/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 require('dotenv').config()
@@ -15,14 +15,17 @@ require('dotenv').config()
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
+      global: true,
       secret: `${process.env.JWT_SECRET}`,
-      signOptions: {expiresIn: "20s"},
+      signOptions: {expiresIn: "90s"},
     }),
     UserModule,
     PassportModule
 ],
-  providers: [AuthService, UserService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, UserService, LocalStrategy],
   controllers: [AuthController],
   exports: [AuthService]
 })
 export class AuthModule {}
+
+//removed JwtStrategy from providers --> JwtStrategy
