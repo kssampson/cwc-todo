@@ -1,16 +1,19 @@
-import { Box, Button, Heading, VStack, useToast } from "@chakra-ui/react"
+import { Box, Button, HStack, Heading, VStack, useToast, Text } from "@chakra-ui/react"
 import { useState } from "react";
 import { useLoaderData, useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
 
+type Data = {
+  user: string,
+  email: string
+}
 
 const Profile = () => {
 
   const Navigate = useNavigate();
   const context = useOutletContext() as Context
   const toast = useToast();
-  const data = useLoaderData();
-  const [userData, setUserData] = useState(data);
+  const data = useLoaderData() as Data;
 
   const logOut = () => {
     localStorage.removeItem("token");
@@ -30,10 +33,20 @@ const Profile = () => {
   return (
     <Box>
       <VStack>
-        <Heading mb={6}>Account Details</Heading>
-        <Button
-        onClick={logOut}
-        >Log Out</Button>
+        <Heading mb={6} mt={5}>Account Details</Heading>
+        <Text>Welcome {data.user}. You can edit your account details here.</Text>
+        <HStack>
+          <Text fontSize='6l'>Username:</Text>
+          <Text fontSize='6l'>{data.user}</Text>
+        </HStack>
+        <HStack>
+          <Button
+          onClick={logOut}
+          >Log Out</Button>
+          <Button>Delete Account</Button>
+
+        </HStack>
+
       </VStack>
     </Box>
   )
