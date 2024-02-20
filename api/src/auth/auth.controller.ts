@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CreateUserDto } from 'src/user/dto/createUserDto';
@@ -30,5 +30,13 @@ export class AuthController {
   @Get('profile')
   async getProfileData(@Request() req) {
     return await this.authService.getProfileData(req.user.email);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('edit-account')
+  async editAccountData(@Request() req) {
+    const {accountId, fieldDesc, userDetail} = req.body.submissionData;
+    // console.log(accountId, userDetail, fieldDesc);
+    return await this.authService.editProfileData(accountId, userDetail, fieldDesc);
   }
 }
