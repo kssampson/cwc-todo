@@ -53,8 +53,13 @@ export class AuthService {
   async getProfileData(email: string) {
     const user = await this.userService.findOneWithEmail(email);
     return {
+      id: user.id,
       user: user.name,
       email: user.email,
     }
+  }
+
+  async editProfileData(accountId: number, userDetail: string, fieldDesc: string) {
+    return await this.userService.updateAccount(accountId, userDetail, fieldDesc)
   }
 }

@@ -19,7 +19,7 @@ export class UserController {
   //   return this.userService.create(createUserDto);
   // }
 
-  // // @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   // @Put('update/:id')
   // update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
   //   return this.userService.update(id, updateUserDto);
