@@ -5,6 +5,7 @@ import { CreateUserDto } from 'src/user/dto/createUserDto';
 import { UserService } from 'src/user/user.service';
 // import { JwtGuard } from './guards/jwt-auth.guard';
 import { AuthGuard } from './guards/auth.guard';
+import { AccountDetailsDto } from 'src/user/dto/accountDetailsDto';
 
 @Controller('auth')
 export class AuthController {
@@ -34,10 +35,8 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Patch('edit-account')
-  async editAccountData(@Request() req) {
-    const {accountId, fieldDesc, userDetail} = req.body.submissionData;
-    // console.log(accountId, userDetail, fieldDesc);
-    return await this.authService.editProfileData(accountId, userDetail, fieldDesc);
+  @Post('edit-account')
+  async editAccountDetail(@Body() accountDetailsDto: AccountDetailsDto) {
+    return this.authService.editAccountDetail(accountDetailsDto);
   }
 }

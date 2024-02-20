@@ -1,4 +1,4 @@
-import { Box, FormControl,IconButton, Input, Text } from "@chakra-ui/react";
+import { Box, Button, FormControl,IconButton, Input, Text, color, useToast } from "@chakra-ui/react";
 import { EditIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons'
 import { useState } from "react";
 import editAccountDetails from "../../utils/editAccountDetails";
@@ -6,14 +6,17 @@ import editAccountDetails from "../../utils/editAccountDetails";
 type Props = {
   fieldDesc: string,
   userDetail: string,
-  id: number
+  id: number,
+  updateData: Function
 }
 
 const UserDetails = (data: Props) => {
 
   const [editClicked, setEditClicked] = useState(false);
   const [newValue, setNewValue] = useState("");
+  const [updated, setUpdated] = useState(false);
 
+  const toast = useToast();
   const token = localStorage.getItem("token");
 
   const toggleEditField = () => {
@@ -25,20 +28,51 @@ const UserDetails = (data: Props) => {
   }
 
   const handleSubmit = async () => {
-    const submissionData = {
-      fieldDesc: data.fieldDesc,
-      accountId: data.id,
-      userDetail: data.userDetail
+    try {
+      const submissionData = {
+        fieldDesc: data.fieldDesc,
+        id: data.id,
+        userDetail: data.userDetail,
+        newValue: newValue
+      }
+      const updatedUser = await editAccountDetails(submissionData, token)
+      toast({
+        title: 'Edit successful.',
+        position: "top-right",
+        description: `Your ${data.fieldDesc} has been successfully changed.`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+      data.updateData(updatedUser);
+      setUpdated(true);
+      // setAccountDetails(updatedUser)
+      toggleEditField()
+    } catch (error) {
+      toast({
+        title: 'Edit not successful.',
+        position: "top-right",
+        description: `Error changing your ${data.fieldDesc}: ${error}`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+      setUpdated(false);
+      toggleEditField()
     }
-    editAccountDetails(submissionData, token);
   }
 
   return (
     <>
     {!editClicked && (
       <Box display="flex">
+        <Box flex={1}>
           <Text flex={1}>{data.fieldDesc}</Text>
-          <Text flex={1}>{data.userDetail}</Text>
+          {data.fieldDesc === 'password' && (
+            <Text as={"em"} flex={1} fontSize={"small"} _hover={{ color: "blue" }}>Forgot password?</Text>
+          )}
+        </Box>
+          <Text flex={1}>{updated ? newValue : data.userDetail}</Text>
           <IconButton onClick={toggleEditField} aria-label={"edit icon"} icon={<EditIcon />} background="none" size="sm"></IconButton>
       </Box>
       )}
@@ -46,16 +80,27 @@ const UserDetails = (data: Props) => {
         <Box display="flex">
           <Text flex={1}>{data.fieldDesc}</Text>
             <FormControl flex={1} isRequired>
-              <Input type='text' fontSize="medium" width="90%" size="sm" onChange={updateValue}/>
+              <Input
+              type={data.fieldDesc === 'password' ? 'password' : 'text'}
+              fontSize="medium"
+              width="90%" size="sm"
+              onChange={updateValue}/>
             </FormControl>
-            <IconButton
-            onClick={handleSubmit}
-            aria-label={"submit icon"}
-            icon={<CheckIcon />}
-            _hover={newValue.length ? { color: "green" } : { color: "red" }} background="none"
-            size="sm"
-            ></IconButton>
-          <IconButton onClick={toggleEditField} aria-label={"cancel icon"} icon={<CloseIcon />} background="none" size="sm" _hover={{ color: "red" }}></IconButton>
+          <IconButton
+          onClick={handleSubmit}
+          aria-label={"submit icon"}
+          icon={<CheckIcon />}
+          _hover={newValue.length ? { color: "green" } : { color: "red" }} background="none"
+          size="sm"
+          ></IconButton>
+          <IconButton
+          onClick={toggleEditField}
+          aria-label={"cancel icon"}
+          icon={<CloseIcon />}
+          background="none"
+          size="sm"
+          _hover={{ color: "red" }}
+          ></IconButton>
         </Box>
       )}
       </>

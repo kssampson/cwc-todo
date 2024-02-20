@@ -3,6 +3,7 @@ import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { AccountDetailsDto } from 'src/user/dto/accountDetailsDto';
 
 @Injectable()
 export class AuthService {
@@ -19,19 +20,6 @@ export class AuthService {
     }
     return null;
   }
-
-  // async login(user: User) {
-  //   const payload = {
-  //     email: user.email,
-  //     sub: {
-  //       name: user.name
-  //     },
-  //   };
-  //   return {
-  //     ...user,
-  //     accessToken: this.jwtService.sign(payload),
-  //   };
-  // }
 
   async creatAccessToken(user) {
     const payload = {
@@ -59,7 +47,10 @@ export class AuthService {
     }
   }
 
-  async editProfileData(accountId: number, userDetail: string, fieldDesc: string) {
-    return await this.userService.updateAccount(accountId, userDetail, fieldDesc)
+  async editAccountDetail(accountDetailsDto: AccountDetailsDto) {
+    if (accountDetailsDto.fieldDesc === 'password') {
+      accountDetailsDto.newValue = await bcrypt.hash(accountDetailsDto.newValue, 10);
+    }
+    return this.userService.updateAccount(accountDetailsDto);
   }
 }
