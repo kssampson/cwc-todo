@@ -8,7 +8,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @Transform((params) => sanitizeHtml(params.value))
-  name: string;
+  username: string;
 
   @IsEmail()
   @Transform((params) => sanitizeHtml(params.value))
@@ -18,8 +18,6 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
-  @IsBoolean()
-  signedIn: boolean;
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto){}

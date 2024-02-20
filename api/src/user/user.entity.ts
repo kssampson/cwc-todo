@@ -11,7 +11,7 @@ export class User {
   lists: List[]
 
   @Column({unique: true, nullable: false})
-  name: string
+  username: string
 
   @Column({unique: true, nullable: false})
   email: string

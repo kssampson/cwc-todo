@@ -54,7 +54,7 @@ export class AuthService {
     const user = await this.userService.findOneWithEmail(email);
     return {
       id: user.id,
-      user: user.name,
+      username: user.username,
       email: user.email,
     }
   }

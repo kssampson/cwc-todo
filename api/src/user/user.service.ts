@@ -21,8 +21,8 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
     // return "monkey"
   }
 
-  async findOneWithUserName(name: string) {
-    return await this.userRepo.findOne( { where: {name: name} })
+  async findOneWithUserName(username: string) {
+    return await this.userRepo.findOne( { where: {username: username} })
   }
 
   async create(createUserDto: CreateUserDto) {
