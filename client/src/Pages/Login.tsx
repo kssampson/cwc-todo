@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, useToast } from "@chakra-ui/react"
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, useToast, Text } from "@chakra-ui/react"
 import { useState } from "react";
 import { validateInputs } from "../utils/validateInputs";
 import login from "../utils/login";
@@ -99,6 +99,8 @@ const Login = () => {
                   <FormErrorMessage>Password is required.</FormErrorMessage>
                 )}
               </FormControl>
+              {/* No functionality yet for looking up password */}
+              <Text as={"em"} flex={1} fontSize={"small"} _hover={{ color: "blue" }}>Forgot password?</Text>
             </Box>
             <Button
             onClick={onSubmit}
