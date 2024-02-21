@@ -5,8 +5,21 @@ import login from "../utils/login";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
 
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure
+} from '@chakra-ui/react'
+
 
 const Login = () => {
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const Navigate = useNavigate();
   const context = useOutletContext() as Context;
@@ -100,7 +113,26 @@ const Login = () => {
                 )}
               </FormControl>
               {/* No functionality yet for looking up password */}
-              <Text as={"em"} flex={1} fontSize={"small"} _hover={{ color: "blue" }}>Forgot password?</Text>
+              <Text onClick={onOpen} as={"em"} flex={1} fontSize={"small"} _hover={{ color: "blue" }}>Forgot password?</Text>
+
+              <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Reset Your Password</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <FormControl>
+                      <FormLabel requiredIndicator>Please enter the email used when creating your account:</FormLabel>
+                      <Input required placeholder='email' />
+                    </FormControl>
+                  </ModalBody>
+
+                  <ModalFooter alignSelf={"center"}>
+                    <Button variant='solid'>Submit</Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+
             </Box>
             <Button
             onClick={onSubmit}
