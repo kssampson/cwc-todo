@@ -1,4 +1,4 @@
-import { Box, Button, FormControl,IconButton, Input, Text, color, useToast } from "@chakra-ui/react";
+import { Box, FormControl,IconButton, Input, Text, useToast } from "@chakra-ui/react";
 import { EditIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons'
 import { useState } from "react";
 import editAccountDetails from "../../utils/editAccountDetails";

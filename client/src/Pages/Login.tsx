@@ -1,20 +1,10 @@
-import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, useToast, Text } from "@chakra-ui/react"
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, useToast, Text, useDisclosure } from "@chakra-ui/react"
 import { useState } from "react";
 import { validateInputs } from "../utils/validateInputs";
 import login from "../utils/login";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
-
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure
-} from '@chakra-ui/react'
+import ForgotPasswordModal from "../components/Profile/ForgotPasswordModal";
 
 
 const Login = () => {
@@ -115,23 +105,6 @@ const Login = () => {
               {/* No functionality yet for looking up password */}
               <Text onClick={onOpen} as={"em"} flex={1} fontSize={"small"} _hover={{ color: "blue" }}>Forgot password?</Text>
 
-              <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Reset Your Password</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    <FormControl>
-                      <FormLabel requiredIndicator>Please enter the email used when creating your account:</FormLabel>
-                      <Input required placeholder='email' />
-                    </FormControl>
-                  </ModalBody>
-
-                  <ModalFooter alignSelf={"center"}>
-                    <Button variant='solid'>Submit</Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
 
             </Box>
             <Button
@@ -141,6 +114,7 @@ const Login = () => {
           </Stack>
         </Box>
       </VStack>
+      <ForgotPasswordModal isOpen={isOpen} onClose={onClose}/>
     </Box>
   )
 }
