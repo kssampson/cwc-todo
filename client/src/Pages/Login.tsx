@@ -104,8 +104,6 @@ const Login = () => {
               </FormControl>
               {/* No functionality yet for looking up password */}
               <Text onClick={onOpen} as={"em"} flex={1} fontSize={"small"} _hover={{ color: "blue" }}>Forgot password?</Text>
-
-
             </Box>
             <Button
             onClick={onSubmit}

@@ -34,12 +34,33 @@ const ForgotPasswordModal = ({isOpen, onClose}: Props) => {
   const submitEmail = async (e: any) => {
     if (validateInputs.isValidEmail(forgotPasswordEmail)) {
       try {
-        const response = await resetPassword(forgotPasswordEmail)
-        onClose()
+        await resetPassword(forgotPasswordEmail)
         setForgotPasswordEmail("")
-      } catch (error) {
-        throw error
+      } catch (error: any) {
+        //if passed dto but not found in database, we will communicate in email sent from backend.
+        if (error.response.data.message === 'Email not found!') {
+          setForgotPasswordEmail("")
+          toast({
+            title: `Success`,
+            position: "top-right",
+            description: `Please check your email for further instruction`,
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+          })
+          //if manual check did not perform, forgotPasswordEmailDto will type check it
+        } else {
+          toast({
+            title: `Invalid email format: ${forgotPasswordEmail}`,
+            position: "top-right",
+            description: `${error}`,
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+          })
+        }
       }
+      //if manual email check caught a format error:
     } else {
       setForgotPasswordEmail("")
       toast({
@@ -51,6 +72,7 @@ const ForgotPasswordModal = ({isOpen, onClose}: Props) => {
         isClosable: true,
       })
     }
+    onClose()
   }
 
   return (
