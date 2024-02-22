@@ -1,12 +1,15 @@
-import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, useToast, Text } from "@chakra-ui/react"
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, useToast, Text, useDisclosure } from "@chakra-ui/react"
 import { useState } from "react";
 import { validateInputs } from "../utils/validateInputs";
 import login from "../utils/login";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
+import ForgotPasswordModal from "../components/Profile/ForgotPasswordModal";
 
 
 const Login = () => {
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const Navigate = useNavigate();
   const context = useOutletContext() as Context;
@@ -100,7 +103,7 @@ const Login = () => {
                 )}
               </FormControl>
               {/* No functionality yet for looking up password */}
-              <Text as={"em"} flex={1} fontSize={"small"} _hover={{ color: "blue" }}>Forgot password?</Text>
+              <Text onClick={onOpen} as={"em"} flex={1} fontSize={"small"} _hover={{ color: "blue" }}>Forgot password?</Text>
             </Box>
             <Button
             onClick={onSubmit}
@@ -109,6 +112,7 @@ const Login = () => {
           </Stack>
         </Box>
       </VStack>
+      <ForgotPasswordModal isOpen={isOpen} onClose={onClose}/>
     </Box>
   )
 }

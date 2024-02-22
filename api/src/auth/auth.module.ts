@@ -9,6 +9,7 @@ import { LocalStrategy } from './strategies/local-strategy';
 // import { JwtStrategy } from './strategies/jwt-strategy';
 import { UserModule } from 'src/user/user.module';
 import { PassportModule } from '@nestjs/passport';
+import { MailModule } from 'src/mail/mail.module';
 require('dotenv').config()
 
 @Module({
@@ -20,7 +21,8 @@ require('dotenv').config()
       signOptions: {expiresIn: "90s"},
     }),
     UserModule,
-    PassportModule
+    PassportModule,
+    MailModule
 ],
   providers: [AuthService, UserService, LocalStrategy],
   controllers: [AuthController],

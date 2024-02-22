@@ -10,6 +10,7 @@ import { User } from './user/user.entity';
 import { Todos } from './todos/todos.entity';
 import { List } from './list/list.entity';
 import { ConfigService, ConfigModule } from '@nestjs/config'
+import { MailModule } from './mail/mail.module';
 import typeorm from './config/typeorm';
 
 @Module({
@@ -25,7 +26,8 @@ import typeorm from './config/typeorm';
     TodosModule,
     UserModule,
     ListModule,
-    AuthModule
+    AuthModule,
+    MailModule
 ],
   controllers: [AppController],
   providers: [AppService],

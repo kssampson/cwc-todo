@@ -18,8 +18,13 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
   }
 
   async findOneWithEmail(email: string) {
-    return await this.userRepo.findOneOrFail( { where: {email: email} })
-    // return "monkey"
+    // return await this.userRepo.findOneOrFail( { where: {email: email} })
+    try {
+      const user = await this.userRepo.findOneOrFail( { where: {email: email} })
+      return user;
+    } catch (error) {
+      return null;
+    }
   }
 
   async findOneWithUserName(username: string) {
