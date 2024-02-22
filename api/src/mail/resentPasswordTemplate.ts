@@ -1,22 +1,20 @@
 export const resetPasswordTemplate = (token: string, id: number) => {
   return (
-    `<!doctype html>
-    <html lang=”en”>
+    `<html lang="en">
     <head>
-    <meta charset=”utf-8″>
-    <title>Reset Your Password</title>
-    <meta name=”description” content=”This is the description that search engines will display. Aim for 145-155 characters.”>
-    <meta name=”Toucando” content=”Toucandou”>
-    <style>
-    body {
-    background-color: #f6b092;
-    }
-    </style>
+    <meta charset="UTF-8">
+    <title>Reset Password Email</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
+    <body style="font-family: Arial, sans-serif; background-color: #f6f6f6; padding: 20px;">
 
-    <body>
-      <h1></h1>
-      <p>Click <a href="http://localhost:3000/reset-password/${token}/${id}" target="_blank">here</a> to reset your password</p>
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+
+      <div style="padding: 20px;">
+        <h2 style="color: #333333;">Reset Password for Todoucan!</h2>
+        <p style="color: #666666;">Click <a href="http://localhost:3000/reset-password/${token}/${id}" target="_blank" style="color: #0000FF; text-decoration: none;">here</a> to reset your password</p>
+      </div>
+    </div>
     </body>
     </html>`
   )

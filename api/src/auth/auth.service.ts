@@ -4,7 +4,8 @@ import { User } from 'src/user/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AccountDetailsDto } from 'src/user/dto/accountDetailsDto';
-import { ForgotPasswordEmailDto } from 'src/user/dto/createUserDto';
+import { ForgotPasswordEmailDto} from 'src/user/dto/createUserDto';
+import { SaveResetPasswordDto } from 'src/user/dto/saveResetPasswordDto'
 import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
@@ -74,5 +75,9 @@ export class AuthService {
       //send email to user w/ link to reset password page w/ the jwt and user.id as params
       return await this.mailService.sendPasswordEmailReset(user, token)
     }
+  }
+
+  async saveResetPassword(saveResetPasswordDto: SaveResetPasswordDto) {
+    return this.userService.saveResetPassword(saveResetPasswordDto);
   }
 }

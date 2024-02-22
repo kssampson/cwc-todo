@@ -8,6 +8,7 @@ import { UpdateUserDto } from './dto/createUserDto';
 import * as bcrypt from 'bcrypt';
 import { throwError } from 'rxjs';
 import { AccountDetailsDto } from './dto/accountDetailsDto';
+import { SaveResetPasswordDto } from './dto/saveResetPasswordDto';
 
 @Injectable()
 export class UserService {
@@ -58,5 +59,17 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
 
   async delete(id: number) {
     return await this.userRepo.delete(id);
+  }
+
+  async saveResetPassword(saveResetPasswordDto: SaveResetPasswordDto) {
+    const user = await this.findOne(saveResetPasswordDto.id);
+    if (user) {
+      const newHashedPassword = await bcrypt.hash(saveResetPasswordDto.password, 10);
+      await this.userRepo.update(saveResetPasswordDto.id, {password: newHashedPassword});
+      const updatedUser = await this.findOne(saveResetPasswordDto.id);
+      return updatedUser;
+    } else {
+      return null;
+    }
   }
 }

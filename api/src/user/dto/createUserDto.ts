@@ -16,9 +16,11 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
+  @Transform((params) => sanitizeHtml(params.value))
   password: string;
 
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto){}
 export class ForgotPasswordEmailDto extends PartialType(CreateUserDto){}
+// export class SaveResetPasswordDto extends PartialType(CreateUserDto){}

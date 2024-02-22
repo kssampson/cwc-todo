@@ -68,9 +68,6 @@ const UserDetails = (data: Props) => {
       <Box display="flex">
         <Box flex={1}>
           <Text flex={1}>{data.fieldDesc}</Text>
-          {data.fieldDesc === 'password' && (
-            <Text as={"em"} flex={1} fontSize={"small"} _hover={{ color: "blue" }}>Forgot password?</Text>
-          )}
         </Box>
           <Text flex={1}>{updated ? newValue : data.userDetail}</Text>
           <IconButton onClick={toggleEditField} aria-label={"edit icon"} icon={<EditIcon />} background="none" size="sm"></IconButton>
