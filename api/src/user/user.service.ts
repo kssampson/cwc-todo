@@ -42,10 +42,6 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
     return await this.userRepo.update(id, updateUserDto)
   }
 
-  // findCorrectColumn = (columnName: string) => {
-  //   if (this.userRepo.)
-  // }
-
   async updateAccount(accoutDetailsDto: AccountDetailsDto) {
     await this.userRepo.update(accoutDetailsDto.id, { [`${accoutDetailsDto.fieldDesc}`]: `${accoutDetailsDto.newValue}` })
     const updatedUser = await this.userRepo.find({where: {id: accoutDetailsDto.id}});
