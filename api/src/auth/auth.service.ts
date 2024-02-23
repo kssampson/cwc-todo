@@ -7,6 +7,7 @@ import { AccountDetailsDto } from 'src/user/dto/accountDetailsDto';
 import { ForgotPasswordEmailDto} from 'src/user/dto/createUserDto';
 import { SaveResetPasswordDto } from 'src/user/dto/saveResetPasswordDto'
 import { MailService } from 'src/mail/mail.service';
+import { DeleteUserDto } from 'src/user/dto/deleteUserDto';
 
 @Injectable()
 export class AuthService {
@@ -79,5 +80,14 @@ export class AuthService {
 
   async saveResetPassword(saveResetPasswordDto: SaveResetPasswordDto) {
     return this.userService.saveResetPassword(saveResetPasswordDto);
+  }
+
+  async deleteAccount(deleteUserDto: DeleteUserDto) {
+    const isUser = await this.validateUser(deleteUserDto.username, deleteUserDto.password);
+    if (isUser) {
+      return await this.userService.delete(deleteUserDto.id);
+    } else {
+      return null;
+    }
   }
 }

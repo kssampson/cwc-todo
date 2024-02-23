@@ -19,7 +19,6 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
   }
 
   async findOneWithEmail(email: string) {
-    // return await this.userRepo.findOneOrFail( { where: {email: email} })
     try {
       const user = await this.userRepo.findOneOrFail( { where: {email: email} })
       return user;
@@ -45,7 +44,6 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
   async updateAccount(accoutDetailsDto: AccountDetailsDto) {
     await this.userRepo.update(accoutDetailsDto.id, { [`${accoutDetailsDto.fieldDesc}`]: `${accoutDetailsDto.newValue}` })
     const updatedUser = await this.userRepo.find({where: {id: accoutDetailsDto.id}});
-    console.log('updatedUser: ', updatedUser)
     return {
       id: updatedUser[0].id,
       email: updatedUser[0].email,

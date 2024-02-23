@@ -6,11 +6,9 @@ const deleteAccount = async (id: number, username: string, email: string, passwo
     const response = await axios.post('http://localhost:3001/auth/delete-account', data, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    console.log('response', response)
-    // return response.data
+    return response.data
   } catch (error) {
-    console.log('error in editAccountsDetails: ', error)
-    // throw error
+    return error;
   }
 }
 

@@ -55,7 +55,7 @@ const SignUp = () => {
       await createUserSubmit({username: name, email: email, password: password})
       .then(() => {
         toast({
-          title: `Account created. Please log in.}`,
+          title: `Account created. Please log in.`,
           position: "top-right",
           status: 'success',
           duration: 3000,

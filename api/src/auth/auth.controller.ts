@@ -56,8 +56,6 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Post('delete-account')
   async deleteAccount(@Body() deleteUserDto: DeleteUserDto) {
-    // console.log('deleteUserDto in auth.controller: ', deleteUserDto)
-    console.log(deleteUserDto)
-    // return this.authService.deleteAccount(deleteUserDto);
+    return await this.authService.deleteAccount(deleteUserDto);
   }
 }

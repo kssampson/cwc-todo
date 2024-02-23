@@ -2,7 +2,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
   ModalBody,
   ModalCloseButton,
@@ -15,11 +14,13 @@ import {
   Stack,
   FormErrorMessage,
   Heading,
+  useToast,
 } from '@chakra-ui/react'
 import { useState } from 'react';
 import { validateInputs } from '../../utils/validateInputs';
 import ConfirmDeleteButton from './ConfirmDelete';
 import deleteAccount from '../../utils/deleteAccount';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   isOpen: boolean,
@@ -28,6 +29,9 @@ type Props = {
 }
 
 const DeleteAccountModal = ({isOpen, onClose, id}: Props) => {
+
+  const Navigate = useNavigate();
+  const toast = useToast();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -72,22 +76,47 @@ const DeleteAccountModal = ({isOpen, onClose, id}: Props) => {
 
     try {
       const token = localStorage.getItem("token");
-      console.log('token: ', token)
-      const response = await deleteAccount(id, name, email, password, token)
+      await deleteAccount(id, name, email, password, token)
+      toast({
+        title: `We're sorry to see you go.`,
+        position: "top-right",
+        description: "Thanks from Todoucan!",
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+      setName("");
+      setEmail("");
+      setPassword("");
+      setSecondPassword("");
+
+      setNameSubmitted(false);
+      setEmailSubmitted(false);
+      setPasswordSubmitted(false);
+      setSecondPasswordSubmitted(false);
+
+      Navigate('/sign-up')
     } catch (error) {
       console.log('error: ', error)
+      toast({
+        title: `We had an error deleting your account.`,
+        position: "top-right",
+        description: `${error}`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+      setName("");
+      setEmail("");
+      setPassword("");
+      setSecondPassword("");
+
+      setNameSubmitted(false);
+      setEmailSubmitted(false);
+      setPasswordSubmitted(false);
+      setSecondPasswordSubmitted(false);
     }
-
-    // setName("");
-    // setEmail("");
-    // setPassword("");
-    // setSecondPassword("");
-
-    // setNameSubmitted(false);
-    // setEmailSubmitted(false);
-    // setPasswordSubmitted(false);
-    // setSecondPasswordSubmitted(false);
-    // onClose();
+    onClose();
   }
 
 
@@ -96,11 +125,8 @@ const DeleteAccountModal = ({isOpen, onClose, id}: Props) => {
     <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
         <ModalOverlay />
         <ModalContent>
-          {/* <ModalHeader>Delete your account</ModalHeader> */}
           <ModalCloseButton />
           <ModalBody>
-
-
           <Box>
             <VStack >
               <Heading mb={6}>Delete Your Account</Heading>
@@ -146,13 +172,8 @@ const DeleteAccountModal = ({isOpen, onClose, id}: Props) => {
               </Box>
             </VStack>
           </Box>
-
           </ModalBody>
           <ModalFooter alignSelf={"center"} m={8}>
-            {/* <Button
-            colorScheme='red'
-            // onClick={submit}
-            >Delete Account</Button> */}
             <Button onClick={onClose} mr={4}>
                 Cancel
               </Button>

@@ -11,7 +11,6 @@ const ConfirmDeleteButton = ({submit}: Props) => {
   const cancelRef = React.useRef<HTMLButtonElement | null>(null);
 
   const confirmSubmit = () => {
-    console.log('final delete clicked!')
     onClose()
     submit()
   }
