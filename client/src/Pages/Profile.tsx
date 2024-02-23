@@ -22,8 +22,6 @@ const Profile = () => {
   const LoaderData = useLoaderData() as Data;
   const [data, setData] = useState(LoaderData);
 
-  console.log('data in profile: ', data)
-
   const logOut = () => {
     localStorage.removeItem("token");
     context.toggleLoggedIn();

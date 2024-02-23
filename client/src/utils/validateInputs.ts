@@ -10,13 +10,10 @@ const isValidName = (name: string) => {
 }
 
 const isValidPassword = (password: string) => {
-  // console.log('current password in validateInputs: ', password)
   return password.length >= 8 ? true : false;
 }
 
 const isValidSecondPassword = (password: string, secondPassword: string) => {
-  // console.log('password 1 in validateSecondPassword: ', password)
-  // console.log('password 2 in validateSecondPassword: ', secondPassword)
 
   return password === secondPassword && isValidPassword(secondPassword) ? true : false;
 }
