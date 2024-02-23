@@ -8,6 +8,7 @@ import { UpdateUserDto } from './dto/createUserDto';
 import * as bcrypt from 'bcrypt';
 import { throwError } from 'rxjs';
 import { AccountDetailsDto } from './dto/accountDetailsDto';
+import { SaveResetPasswordDto } from './dto/saveResetPasswordDto';
 
 @Injectable()
 export class UserService {
@@ -18,7 +19,6 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
   }
 
   async findOneWithEmail(email: string) {
-    // return await this.userRepo.findOneOrFail( { where: {email: email} })
     try {
       const user = await this.userRepo.findOneOrFail( { where: {email: email} })
       return user;
@@ -41,14 +41,9 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
     return await this.userRepo.update(id, updateUserDto)
   }
 
-  // findCorrectColumn = (columnName: string) => {
-  //   if (this.userRepo.)
-  // }
-
   async updateAccount(accoutDetailsDto: AccountDetailsDto) {
     await this.userRepo.update(accoutDetailsDto.id, { [`${accoutDetailsDto.fieldDesc}`]: `${accoutDetailsDto.newValue}` })
     const updatedUser = await this.userRepo.find({where: {id: accoutDetailsDto.id}});
-    console.log('updatedUser: ', updatedUser)
     return {
       id: updatedUser[0].id,
       email: updatedUser[0].email,
@@ -58,5 +53,17 @@ constructor(@InjectRepository(User)private userRepo: Repository<User>) {}
 
   async delete(id: number) {
     return await this.userRepo.delete(id);
+  }
+
+  async saveResetPassword(saveResetPasswordDto: SaveResetPasswordDto) {
+    const user = await this.findOne(saveResetPasswordDto.id);
+    if (user) {
+      const newHashedPassword = await bcrypt.hash(saveResetPasswordDto.password, 10);
+      await this.userRepo.update(saveResetPasswordDto.id, {password: newHashedPassword});
+      const updatedUser = await this.findOne(saveResetPasswordDto.id);
+      return updatedUser;
+    } else {
+      return null;
+    }
   }
 }

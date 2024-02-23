@@ -1,9 +1,13 @@
-import { IsString, IsBoolean, isEmail, IsEmail, IsNumber, IsNotEmpty } from "class-validator";
+import { IsString, IsEmail, IsNumber, IsNotEmpty } from "class-validator";
 import { PartialType } from '@nestjs/mapped-types'
 import { Transform } from "class-transformer";
 import * as sanitizeHtml from 'sanitize-html';
 
-export class CreateUserDto {
+export class DeleteUserDto {
+
+  @IsNumber()
+  @IsNotEmpty()
+  id: number;
 
   @IsNotEmpty()
   @IsString()
@@ -20,7 +24,3 @@ export class CreateUserDto {
   password: string;
 
 }
-
-export class UpdateUserDto extends PartialType(CreateUserDto){}
-export class ForgotPasswordEmailDto extends PartialType(CreateUserDto){}
-// export class SaveResetPasswordDto extends PartialType(CreateUserDto){}

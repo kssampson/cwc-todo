@@ -1,11 +1,13 @@
-import { Box, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, Text, Button } from "@chakra-ui/react";
+import { Box, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { validateInputs } from "../utils/validateInputs";
+import saveResetPassword from "../utils/saveResetPassword";
 
 const ResetPassword = () => {
 
   const { id, token } = useParams();
+  let idNum = Number(id);
 
   const [password, setPassword] = useState("");
   const [secondPassword, setSecondPassword] = useState("")
@@ -26,8 +28,12 @@ const ResetPassword = () => {
     setSecondPassword(e.target.value);
   }
 
-  // console.log('id: ', id)
-  // console.log('token: ', token)
+  const onSubmit = async () => {
+   setPasswordSubmitted(true);
+   setSecondPasswordSubmitted(true);
+   const data = {password: password, id: idNum, token: token}
+   await saveResetPassword(data)
+  }
 
   return (
     <Box>
@@ -54,7 +60,7 @@ const ResetPassword = () => {
               </FormControl>
             </Box>
             <Button
-            // onClick={onSubmit}
+            onClick={onSubmit}
             >Submit
             </Button>
           </Stack>

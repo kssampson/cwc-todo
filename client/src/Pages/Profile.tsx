@@ -1,9 +1,10 @@
-import { Box, Button, useToast, Text, Avatar, IconButton, VStack} from "@chakra-ui/react"
+import { Box, Button, useToast, Text, Avatar, IconButton, VStack, useDisclosure} from "@chakra-ui/react"
 import { EditIcon } from '@chakra-ui/icons'
 import { useLoaderData, useNavigate, useOutletContext } from "react-router-dom";
 import { Context } from "../App";
 import UserDetails from "../components/Profile/UserDetails";
 import { useState } from "react";
+import DeleteAccountModal from "../components/Profile/DeleteAccountModal";
 
 type Data = {
   username: string,
@@ -13,13 +14,15 @@ type Data = {
 
 const Profile = () => {
 
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const Navigate = useNavigate();
   const context = useOutletContext() as Context
   const toast = useToast();
   const LoaderData = useLoaderData() as Data;
   const [data, setData] = useState(LoaderData);
 
-  console.log('data: ', data)
+  console.log('data in profile: ', data)
 
   const logOut = () => {
     localStorage.removeItem("token");
@@ -38,6 +41,10 @@ const Profile = () => {
 
   const updateData = (updatedData: any | void) => {
     setData(updatedData)
+  }
+
+  const openModal = () => {
+    onOpen()
   }
 
   return (
@@ -63,8 +70,9 @@ const Profile = () => {
         </Box>
         <Box display="flex" gap={4} justifyContent="center">
           <Button onClick={logOut}>Log Out</Button>
-          <Button>Delete Account</Button>
+          <Button onClick={onOpen} colorScheme="red">Delete Account</Button>
         </Box>
+        <DeleteAccountModal isOpen={isOpen} onClose={onClose} id={data.id}/>
     </Box>
   )
 }
