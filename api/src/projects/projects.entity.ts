@@ -3,16 +3,22 @@ import { User } from "src/user/user.entity";
 import { Todos } from "src/todos/todos.entity";
 
 @Entity()
-export class List {
+export class Projects {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.lists)
-  userId: User;
+  @ManyToOne(() => User, (user) => user.projects)
+  user: User;
+
+  @Column()
+  name: string
+
+  @Column({ nullable: true })
+  description: string
 
   @ManyToMany(() => Todos, (todos) => todos.lists)
   todos: Todos[]
 
   @Column()
-  completed: boolean
+  status: string
 }

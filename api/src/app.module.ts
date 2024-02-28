@@ -3,12 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TodosModule } from './todos/todos.module';
 import { UserModule } from './user/user.module';
-import { ListModule } from './list/list.module';
+import { ProjectsModule } from './projects/projects.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { Todos } from './todos/todos.entity';
-import { List } from './list/list.entity';
+import { Projects } from './projects/projects.entity';
 import { ConfigService, ConfigModule } from '@nestjs/config'
 import { MailModule } from './mail/mail.module';
 import typeorm from './config/typeorm';
@@ -25,7 +25,7 @@ import typeorm from './config/typeorm';
     }),
     TodosModule,
     UserModule,
-    ListModule,
+    ProjectsModule,
     AuthModule,
     MailModule
 ],
