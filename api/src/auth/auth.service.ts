@@ -8,11 +8,14 @@ import { ForgotPasswordEmailDto} from 'src/user/dto/createUserDto';
 import { SaveResetPasswordDto } from 'src/user/dto/saveResetPasswordDto'
 import { MailService } from 'src/mail/mail.service';
 import { DeleteUserDto } from 'src/user/dto/deleteUserDto';
+import { ProjectsService } from 'src/projects/projects.service';
+import { CreateProjectsDto } from 'src/projects/dto/createProjectsDto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
+    private projectsService: ProjectsService,
     private mailService: MailService,
     private jwtService: JwtService
     ) {}
@@ -89,5 +92,22 @@ export class AuthService {
     } else {
       return null;
     }
+  }
+
+  async createProject(createProjectsDto: CreateProjectsDto) {
+    return await this.projectsService.createProject(createProjectsDto)
+  }
+
+  async getUserProjects(id: number) {
+    return await this.projectsService.getUserProjects(id)
+  }
+
+  async getProject(userId: number, id: number) {
+    // return await this.projectsService.getProject(id)
+    const projects = await this.projectsService.getUserProjects(userId)
+    return projects.filter((project) => project.id === id)
+    // console.log('projects: ', projects);
+    // console.log('userId: ', userId)
+    // console.log('id: ', id )
   }
 }

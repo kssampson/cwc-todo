@@ -6,7 +6,7 @@ import UserDetails from "../components/Profile/UserDetails";
 import { useState } from "react";
 import DeleteAccountModal from "../components/Profile/DeleteAccountModal";
 
-type Data = {
+export type Data = {
   username: string,
   email: string,
   id: number
@@ -21,8 +21,6 @@ const Profile = () => {
   const toast = useToast();
   const LoaderData = useLoaderData() as Data;
   const [data, setData] = useState(LoaderData);
-
-  console.log('data in profile: ', data)
 
   const logOut = () => {
     localStorage.removeItem("token");

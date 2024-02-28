@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { CreateUserDto, ForgotPasswordEmailDto} from 'src/user/dto/createUserDto';
@@ -8,6 +8,7 @@ import { UserService } from 'src/user/user.service';
 // import { JwtGuard } from './guards/jwt-auth.guard';
 import { AuthGuard } from './guards/auth.guard';
 import { AccountDetailsDto } from 'src/user/dto/accountDetailsDto';
+import { CreateProjectsDto } from 'src/projects/dto/createProjectsDto';
 
 @Controller('auth')
 export class AuthController {
@@ -57,5 +58,31 @@ export class AuthController {
   @Post('delete-account')
   async deleteAccount(@Body() deleteUserDto: DeleteUserDto) {
     return await this.authService.deleteAccount(deleteUserDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('user-projects')
+  async getUserProjects(@Request() req) {
+    const user = await this.authService.getProfileData(req.user.email);
+    const projects = await this.authService.getUserProjects(user.id);
+    return {
+      user,
+      projects
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('project/:id')
+  async getProject(@Param('id') id: number, @Request() req) {
+    // console.log('id: ', id)
+    // console.log('req.user', req.user)
+    const user = await this.authService.getProfileData(req.user.email);
+    return this.authService.getProject(user.id, id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('create-project')
+  async createProject(@Body() createProjectsDto: CreateProjectsDto, @Request() req) {
+    return await this.authService.createProject(createProjectsDto)
   }
 }

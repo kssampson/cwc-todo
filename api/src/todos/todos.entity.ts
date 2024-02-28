@@ -1,13 +1,13 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { List } from "src/list/list.entity";
+import { Projects } from "src/projects/projects.entity";
 
 @Entity()
 export class Todos {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => List, list => list.todos)
-  lists: List;
+  @ManyToOne(() => Projects, project => project.todos)
+  lists: Projects;
 
   @Column()
   todo: string;

@@ -10,6 +10,7 @@ import { LocalStrategy } from './strategies/local-strategy';
 import { UserModule } from 'src/user/user.module';
 import { PassportModule } from '@nestjs/passport';
 import { MailModule } from 'src/mail/mail.module';
+import { ProjectsModule } from 'src/projects/projects.module';
 require('dotenv').config()
 
 @Module({
@@ -21,6 +22,7 @@ require('dotenv').config()
       signOptions: {expiresIn: "90s"},
     }),
     UserModule,
+    ProjectsModule,
     PassportModule,
     MailModule
 ],
