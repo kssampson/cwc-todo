@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/user.entity';
 import { JwtService } from '@nestjs/jwt';
@@ -10,12 +10,15 @@ import { MailService } from 'src/mail/mail.service';
 import { DeleteUserDto } from 'src/user/dto/deleteUserDto';
 import { ProjectsService } from 'src/projects/projects.service';
 import { CreateProjectsDto } from 'src/projects/dto/createProjectsDto';
+import { CreateTasksDto } from 'src/tasks/dto/createTasksDto';
+import { TasksService } from 'src/tasks/tasks.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private projectsService: ProjectsService,
+    private tasksService: TasksService,
     private mailService: MailService,
     private jwtService: JwtService
     ) {}
@@ -103,11 +106,17 @@ export class AuthService {
   }
 
   async getProject(userId: number, id: number) {
-    // return await this.projectsService.getProject(id)
     const projects = await this.projectsService.getUserProjects(userId)
     return projects.filter((project) => project.id === id)
-    // console.log('projects: ', projects);
-    // console.log('userId: ', userId)
-    // console.log('id: ', id )
+  }
+
+  async createTasks(createTasksDto: CreateTasksDto, userId: number) {
+    const projects = await this.projectsService.getUserProjects(userId)
+    const project = projects.find((project) => project.id === createTasksDto.projectId);
+    if (project) {
+      return await this.tasksService.createTasks(createTasksDto, userId)
+    } else {
+      throw new UnauthorizedException('Project not found')
+    }
   }
 }

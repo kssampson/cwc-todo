@@ -7,10 +7,11 @@ import createTask from "../../utils/createTask";
 
 type Props = {
   tasks: Task[],
+  projectId: number,
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>
 }
 
-const CreateTasksAccordian = ({tasks, setTasks}: Props) => {
+const CreateTasksAccordian = ({tasks, setTasks, projectId}: Props) => {
 
   const toast = useToast();
 
@@ -35,13 +36,14 @@ const CreateTasksAccordian = ({tasks, setTasks}: Props) => {
 
     if (name !== "") {
       setIsOpen(false);
-      // const newTask = {name: name, description: description, status: 'ToDo'}
+      const newTask = {name: name, description: description, projectId: projectId, status: 'ToDo'}
       const token = localStorage.getItem("token");
       console.log('name: ', name)
       console.log('description: ', description)
       try {
-        // const response = await createTask(newTask, token)
-        // setTasks([...tasks, ...response])
+        const response = await createTask(newTask, token)
+        console.log('response: ', response)
+        setTasks(response)
         setName("");
         setDescription("");
         setSubmitClickedName(false);

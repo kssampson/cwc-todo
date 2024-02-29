@@ -2,18 +2,18 @@ import { Box, Text } from "@chakra-ui/react"
 import { useLoaderData, useParams } from "react-router-dom";
 import { Project as ProjectType } from './Projects'
 import CreateTasksAccordian from "../components/Proj/CreateTasksAccordian";
-import { SetStateAction, useState } from "react";
+import { useEffect, useState } from "react";
 
 export type Task = {
   name: string;
-  status: "To Do" | "In Progress" | "Completed";
+  status: "ToDo" | "In Progress" | "Completed";
   subTasksCount: number;
   completedSubTasksCount: number;
 }
 
 const statusGroups = [
     {
-      name: "To Do"
+      name: "ToDo"
     },
     {
       name: "In Progress"
@@ -26,7 +26,7 @@ const statusGroups = [
   const fakeTasks: Task[] = [
     {
       name: "task A",
-      status: 'To Do',
+      status: 'ToDo',
       subTasksCount: 10,
       completedSubTasksCount: 0
     },
@@ -50,19 +50,19 @@ const statusGroups = [
     },
     {
       name: "task E",
-      status: 'To Do',
+      status: 'ToDo',
       subTasksCount: 9,
       completedSubTasksCount: 2
     },
     {
       name: "task F",
-      status: 'To Do',
+      status: 'ToDo',
       subTasksCount: 7,
       completedSubTasksCount: 6
     },
     {
       name: "task G",
-      status: 'To Do',
+      status: 'ToDo',
       subTasksCount: 8,
       completedSubTasksCount: 5
     },
@@ -75,10 +75,16 @@ const statusGroups = [
   ]
 
 const Project = () => {
-  const { id } = useParams();
+  // const { id } = useParams();
   const data = useLoaderData() as ProjectType[];
   const project = data[0];
-  const [tasks, setTasks] = useState(fakeTasks)
+  const [tasks, setTasks] = useState(project.tasks)
+
+  // console.log('id: ', id)
+  // console.log('project.id: ', project.id)
+  // console.log('data: ', data)
+  // console.log('project: ', project)
+  console.log(project.tasks)
 
 
   return (
@@ -90,9 +96,9 @@ const Project = () => {
       <Box display={"flex"} gap={10}>
         {statusGroups.map((group, idx) => {
           return (
-            <Box key={idx} flex={1} border={"1px solid"}>
+            <Box flex={1} border={"1px solid"}>
               <Text fontSize={18} mt={2} textAlign={"center"}>{group.name}</Text>
-              {fakeTasks.map((task, idx) => {
+              {tasks.map((task, idx) => {
                 if (group.name === task.status) {
                   return (
                     <Box
@@ -104,15 +110,16 @@ const Project = () => {
                     justifyContent={"space-between"}
                     _hover={{cursor: "pointer", backgroundColor: "peachpuff"}}
                     >
-                      <Text key={idx}>{`${task.name}`}</Text>
-                      <Text key={idx}>{`${task.completedSubTasksCount}/${task.subTasksCount}`}</Text>
+                      <Text >{`${task.name}`}</Text>
+                      {/* <Text >{`${task.completedSubTasksCount}/${task.subTasksCount}`}</Text> */}
                     </Box>
                   )
                 }
               })}
                 <Box>
-                  { group.name === "To Do" && (
+                  { group.name === "ToDo" && (
                     <CreateTasksAccordian
+                      projectId={project.id}
                       tasks={tasks}
                       setTasks={setTasks} />
                     )

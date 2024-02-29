@@ -9,6 +9,7 @@ import { UserService } from 'src/user/user.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AccountDetailsDto } from 'src/user/dto/accountDetailsDto';
 import { CreateProjectsDto } from 'src/projects/dto/createProjectsDto';
+import { CreateTasksDto } from 'src/tasks/dto/createTasksDto';
 
 @Controller('auth')
 export class AuthController {
@@ -84,5 +85,13 @@ export class AuthController {
   @Post('create-project')
   async createProject(@Body() createProjectsDto: CreateProjectsDto, @Request() req) {
     return await this.authService.createProject(createProjectsDto)
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('create-tasks')
+  async createTasks(@Body() createTasksDto: CreateTasksDto, @Request() req) {
+    const user = await this.authService.getProfileData(req.user.email);
+    // console.log('createTasksDto in auth.controler: ', createTasksDto)
+    return await this.authService.createTasks(createTasksDto, user.id)
   }
 }

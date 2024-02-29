@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, OneToMany } from "typeorm";
 import { User } from "src/user/user.entity";
-import { Todos } from "src/todos/todos.entity";
+import { Task } from "src/tasks/tasks.entity";
 
 @Entity()
-export class Projects {
+export class Project {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -11,14 +11,14 @@ export class Projects {
   user: User;
 
   @Column()
-  name: string
+  name: string;
 
   @Column({ nullable: true })
-  description: string
+  description: string;
 
-  @ManyToMany(() => Todos, (todos) => todos.lists)
-  todos: Todos[]
+  @OneToMany(() => Task, (task) => task.project)
+  tasks: Task[];
 
   @Column()
-  status: string
+  status: string;
 }

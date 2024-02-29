@@ -3,12 +3,14 @@ import { Data } from './Profile';
 import { Box, Text } from "@chakra-ui/react";
 import CreateProjectsAcordian from "../components/Proj/CreateProjectsAccordian";
 import { useState } from "react";
+import { Task } from "./Project";
 
 export type Project = {
   id: number,
   name: string,
   description?: string,
-  status: string
+  status: string,
+  tasks: Task[]
 }
 
 type LoaderData = {
