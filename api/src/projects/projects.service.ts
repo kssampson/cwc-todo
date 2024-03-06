@@ -1,19 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProjectsDto } from './dto/createProjectsDto';
-import { Projects } from './projects.entity';
+import { Project } from './projects.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { create } from 'domain';
+import { CreateTasksDto } from 'src/tasks/dto/createTasksDto';
 
 @Injectable()
 export class ProjectsService {
   constructor(
-    @InjectRepository(Projects)
-    private projectsRepository: Repository<Projects>
+    @InjectRepository(Project)
+    private projectsRepository: Repository<Project>
   ) {}
 
   async getUserProjects(id: number) {
-    return await this.projectsRepository.find({ where : { user: { id } } })
+    return await this.projectsRepository.find({ where : { user: { id } }, relations: ['tasks', 'tasks.subTasks'], })
   }
 
   async createProject(createProjectsDto: CreateProjectsDto) {
@@ -27,7 +28,7 @@ export class ProjectsService {
     return await this.getUserProjects(createProjectsDto.id)
   }
 
-  async getProject(id: number) {
+  // async getProject(id: number) {
 
-  }
+  // }
 }

@@ -3,12 +3,15 @@ import { Data } from './Profile';
 import { Box, Text } from "@chakra-ui/react";
 import CreateProjectsAcordian from "../components/Proj/CreateProjectsAccordian";
 import { useState } from "react";
+import { Task } from "./Project";
+// import ProjectCard from "../components/Proj/ProjectCard";
 
 export type Project = {
   id: number,
   name: string,
   description?: string,
-  status: string
+  status: string,
+  tasks: Task[]
 }
 
 type LoaderData = {
@@ -23,7 +26,6 @@ const Projects = () => {
   const user = data.user as Data;
 
   const goToProject = (id: number) => {
-
     Navigate(`/project/${id}`)
   }
 
@@ -35,10 +37,11 @@ const Projects = () => {
         <Box m={5}>
           {projects.map((project, idx) => {
             return (
-              <Box key={idx} display={"flex"} m={10} p={4} border={"1px solid"} onClick={() => goToProject(project.id)} _hover={{cursor: "pointer", backgroundColor: "peachpuff"}}>
+              <Box key={idx} display={"flex"} m={10} p={4} border={"1px solid"} onClick={() => goToProject(project.id)} _hover={{cursor: "pointer", backgroundColor: "gray.50"}}>
                 <Text flex={1}>{project.name}</Text>
                 <Text flex={1} noOfLines={1}>{project.description}</Text>
                 <Text flex={1} ml={20}>{project.status}</Text>
+                {/* <ProjectCard projectName={project.name} description={project.description || "No description available"} projectStatus={project.status}/> */}
               </Box>
             )
           })}
@@ -46,6 +49,6 @@ const Projects = () => {
         </Box>
     </Box>
   )
-}
+};
 
 export default Projects;

@@ -1,5 +1,5 @@
 import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
-import { Projects } from "src/projects/projects.entity"
+import { Project } from "src/projects/projects.entity"
 
 @Entity("users")
 export class User {
@@ -7,8 +7,8 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number
 
-  @OneToMany(() => Projects, (project) => project.user)
-  projects: Projects[]
+  @OneToMany(() => Project, (project) => project.user)
+  projects: Project[]
 
   @Column({unique: true, nullable: false})
   username: string

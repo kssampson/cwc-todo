@@ -1,17 +1,21 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TodosModule } from './todos/todos.module';
+import { TasksModule } from './tasks/tasks.module';
 import { UserModule } from './user/user.module';
 import { ProjectsModule } from './projects/projects.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
-import { Todos } from './todos/todos.entity';
-import { Projects } from './projects/projects.entity';
+import { Task } from './tasks/tasks.entity';
+import { Project } from './projects/projects.entity';
 import { ConfigService, ConfigModule } from '@nestjs/config'
 import { MailModule } from './mail/mail.module';
+import { SubTaskController } from './sub-task/sub-task.controller';
+import { SubTaskService } from './sub-task/sub-task.service';
+import { SubTaskModule } from './sub-task/sub-task.module';
 import typeorm from './config/typeorm';
+import { TasksService } from './tasks/tasks.service';
 
 @Module({
   imports: [
@@ -23,14 +27,16 @@ import typeorm from './config/typeorm';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => (configService.get('typeorm'))
     }),
-    TodosModule,
+    TasksModule,
     UserModule,
     ProjectsModule,
     AuthModule,
-    MailModule
+    MailModule,
+    SubTaskModule
 ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
 
+//removed SubTaskService from controllers and providers array**

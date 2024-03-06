@@ -1,19 +1,24 @@
-import { Box, Text } from "@chakra-ui/react"
+import { Box, Text, useDisclosure } from "@chakra-ui/react"
 import { useLoaderData, useParams } from "react-router-dom";
 import { Project as ProjectType } from './Projects'
 import CreateTasksAccordian from "../components/Proj/CreateTasksAccordian";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
+// import TaskCard from "../components/tasks/TaskCard";
+import TaskModal, { SubTask } from "../components/subTasks/TaskModal";
 
 export type Task = {
   name: string;
-  status: "To Do" | "In Progress" | "Completed";
+  status: "ToDo" | "In Progress" | "Completed";
+  description?: string;
   subTasksCount: number;
   completedSubTasksCount: number;
+  id: number;
+  subTasks: SubTask[];
 }
 
 const statusGroups = [
     {
-      name: "To Do"
+      name: "ToDo"
     },
     {
       name: "In Progress"
@@ -23,63 +28,20 @@ const statusGroups = [
     }
   ]
 
-  const fakeTasks: Task[] = [
-    {
-      name: "task A",
-      status: 'To Do',
-      subTasksCount: 10,
-      completedSubTasksCount: 0
-    },
-    {
-      name: "task B",
-      status: 'In Progress',
-      subTasksCount: 13,
-      completedSubTasksCount: 0
-    },
-    {
-      name: "task C",
-      status: 'Completed',
-      subTasksCount: 8,
-      completedSubTasksCount: 3
-    },
-    {
-      name: "task D",
-      status: 'Completed',
-      subTasksCount: 12,
-      completedSubTasksCount: 10
-    },
-    {
-      name: "task E",
-      status: 'To Do',
-      subTasksCount: 9,
-      completedSubTasksCount: 2
-    },
-    {
-      name: "task F",
-      status: 'To Do',
-      subTasksCount: 7,
-      completedSubTasksCount: 6
-    },
-    {
-      name: "task G",
-      status: 'To Do',
-      subTasksCount: 8,
-      completedSubTasksCount: 5
-    },
-    {
-      name: "task H",
-      status: 'In Progress',
-      subTasksCount: 10,
-      completedSubTasksCount: 4
-    },
-  ]
-
 const Project = () => {
   const { id } = useParams();
   const data = useLoaderData() as ProjectType[];
   const project = data[0];
-  const [tasks, setTasks] = useState(fakeTasks)
+  const [tasks, setTasks] = useState(project.tasks)
 
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const [selectedTask, setSelectedTask] = useState<Task>(tasks[0]);
+
+  const onClickTask = (task: any) => {
+    setSelectedTask(task)
+    onOpen()
+  }
 
   return (
     <Box m={10}>
@@ -90,9 +52,9 @@ const Project = () => {
       <Box display={"flex"} gap={10}>
         {statusGroups.map((group, idx) => {
           return (
-            <Box key={idx} flex={1} border={"1px solid"}>
+            <Box flex={1} border={"1px solid"}>
               <Text fontSize={18} mt={2} textAlign={"center"}>{group.name}</Text>
-              {fakeTasks.map((task, idx) => {
+              {tasks.map((task, idx) => {
                 if (group.name === task.status) {
                   return (
                     <Box
@@ -102,17 +64,22 @@ const Project = () => {
                     border={"1px solid"}
                     display={"flex"}
                     justifyContent={"space-between"}
-                    _hover={{cursor: "pointer", backgroundColor: "peachpuff"}}
+                    onClick={() => onClickTask(task)}
+                    _hover={ {cursor: "pointer", backgroundColor: "gray.50"}}
+
                     >
-                      <Text key={idx}>{`${task.name}`}</Text>
-                      <Text key={idx}>{`${task.completedSubTasksCount}/${task.subTasksCount}`}</Text>
+                      <Text >{`${task.name}`}</Text>
+                      <Text>{`${task.description}`}</Text>
+                      {/* <Text >{`${task.completedSubTasksCount}/${task.subTasksCount}`}</Text>
+                      {/* <TaskCard taskName={task.name} taskStatus={task.status} description={task.description || "This task has no description."}/> */}
                     </Box>
                   )
-                }
+                } else { return null }
               })}
                 <Box>
-                  { group.name === "To Do" && (
+                  { group.name === "ToDo" && (
                     <CreateTasksAccordian
+                      projectId={project.id}
                       tasks={tasks}
                       setTasks={setTasks} />
                     )
@@ -122,6 +89,14 @@ const Project = () => {
           )
         })}
       </Box>
+      <TaskModal
+        isOpen={isOpen}
+        onClose={onClose}
+        taskName={selectedTask.name}
+        taskDescription={selectedTask.description || "This task has no description"}
+        taskId={selectedTask.id}
+        task={selectedTask}
+        />
     </Box>
   )
 }
