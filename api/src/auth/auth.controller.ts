@@ -81,7 +81,7 @@ export class AuthController {
     // console.log('id: ', id)
     // console.log('req.user', req.user)
     const user = await this.authService.getProfileData(req.user.email);
-    return this.authService.getProject(user.id, id);
+    return await this.authService.getProject(user.id, id);
   }
 
   @UseGuards(AuthGuard)
@@ -108,7 +108,6 @@ export class AuthController {
   @Delete('delete-sub-task')
   async deleteSubTask(@Body() deleteSubTaskDto: DeleteSubTaskDto, @Request() req) {
     const user = await this.authService.getProfileData(req.user.email);
-    // console.log('deleteSubTaskDto: ', deleteSubTaskDto)
     return await this.authService.deleteSubTask(deleteSubTaskDto.taskId, deleteSubTaskDto.subTaskId, user.id);
   }
 
@@ -116,8 +115,6 @@ export class AuthController {
   @Patch('edit-sub-task-name')
   async editSubTaskName(@Body() editSubTaskNameDto: EditSubTaskNameDto, @Request() req) {
     const user = await this.authService.getProfileData(req.user.email);
-    // console.log('editSubTaskNameDto.subTaskId: ', editSubTaskNameDto.subTaskId)
-    // console.log('editSubTaskNameDto.taskId: ', editSubTaskNameDto.taskId)
 
     return await this.authService.editSubTaskName(editSubTaskNameDto.taskId, editSubTaskNameDto.subTaskId, editSubTaskNameDto.newValue)
   }

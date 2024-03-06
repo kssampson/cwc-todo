@@ -6,6 +6,7 @@ import deleteSubTask from "../../utils/deleteSubTask";
 import onClickEditSubTask from "../../utils/updateSubTask";
 import { useState } from "react";
 import SubTaskNameDetail from "./SubTaskNameDetail";
+import { SubTask } from "./TaskModal";
 
 type Props = {
   subTaskName: string;
@@ -13,21 +14,20 @@ type Props = {
   subTaskDescription: string;
   taskId: number;
   subTaskId: number;
+  setSubTasks: React.Dispatch<React.SetStateAction<SubTask[]>>;
 }
 
-const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, taskId, subTaskId }: Props ) => {
+const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, taskId, subTaskId, setSubTasks }: Props ) => {
 
   const token = localStorage.getItem('token');
   const toast = useToast();
-
-  const [subTaskDeleted, setSubTaskDeleted] = useState<boolean>(false);
   const [editClicked, setEditClicked] = useState<boolean>(false);
 
 
-  const oncClickDeleteSubTask = async () => {
+  const onClickDeleteSubTask = async () => {
     try {
       const response = await deleteSubTask(taskId, subTaskId, token)
-      console.log('repsonse for subTaskDelete: ', response)
+      setSubTasks(response);
       toast({
         title: 'Success!',
         position: "top-right",
@@ -69,7 +69,7 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
                   background="none"
                   size="sm"
                   _hover={{ color: "gray.50" }}
-                  onClick={oncClickDeleteSubTask}
+                  onClick={onClickDeleteSubTask}
                   >
                 </IconButton>
                 <AccordionIcon />

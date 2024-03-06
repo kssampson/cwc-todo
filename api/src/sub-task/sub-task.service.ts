@@ -31,7 +31,9 @@ export class SubTaskService {
     if (!subTaskToDelete) {
       throw new Error('sub task does not exist!')
     } else {
-      return await this.subTaskRepository.remove(subTaskToDelete);
+      await this.subTaskRepository.remove(subTaskToDelete);
+      const subTasks = await this.getSubTasks(taskId)
+      return subTasks;
     }
   }
 

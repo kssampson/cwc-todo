@@ -39,9 +39,7 @@ const SubTaskNameDetail = ( {subTaskName, editClicked, setEditClicked, subTaskId
         duration: 3000,
         isClosable: true,
       })
-      // data.updateData(updatedUser);
       setUpdated(true);
-      // setAccountDetails(updatedUser)
       toggleEditField()
     } catch (error) {
       toast({
@@ -62,7 +60,16 @@ const SubTaskNameDetail = ( {subTaskName, editClicked, setEditClicked, subTaskId
     {!editClicked && (
       <Box display="flex" alignItems={"center"}>
           <Text flex={1}>{updated ? newValue : `${subTaskName}`}</Text>
-          <IconButton onClick={toggleEditField} aria-label={"edit icon"} icon={<EditIcon />} background="none" size="sm"></IconButton>
+          <IconButton onClick={(e) => {
+            e.stopPropagation()
+            toggleEditField()
+            }}
+            aria-label={"edit icon"}
+            icon={<EditIcon />}
+            background="none"
+            size="sm"
+            >
+            </IconButton>
       </Box>
       )}
       {editClicked && (
@@ -82,7 +89,10 @@ const SubTaskNameDetail = ( {subTaskName, editClicked, setEditClicked, subTaskId
           size="sm"
           ></IconButton>
           <IconButton
-          onClick={toggleEditField}
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleEditField()
+          }}
           aria-label={"cancel icon"}
           icon={<CloseIcon />}
           background="none"

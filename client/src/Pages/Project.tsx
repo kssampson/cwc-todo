@@ -66,7 +66,6 @@ const Project = () => {
                     justifyContent={"space-between"}
                     onClick={() => onClickTask(task)}
                     _hover={ {cursor: "pointer", backgroundColor: "gray.50"}}
-
                     >
                       <Text >{`${task.name}`}</Text>
                       <Text>{`${task.description}`}</Text>
@@ -89,14 +88,16 @@ const Project = () => {
           )
         })}
       </Box>
-      <TaskModal
-        isOpen={isOpen}
-        onClose={onClose}
-        taskName={selectedTask.name}
-        taskDescription={selectedTask.description || "This task has no description"}
-        taskId={selectedTask.id}
-        task={selectedTask}
-        />
+      {tasks.length ? (
+        <TaskModal
+          isOpen={isOpen}
+          onClose={onClose}
+          taskName={selectedTask.name}
+          taskDescription={selectedTask.description || "This task has no description"}
+          taskId={selectedTask.id}
+          task={selectedTask}
+          />
+      ) : null}
     </Box>
   )
 }

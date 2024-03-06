@@ -47,6 +47,7 @@ const TaskModal = ({ isOpen, onClose, taskName, taskDescription, taskId, task }:
                       subTaskDescription={subTask.description || "No description for this sub task"}
                       taskId={taskId}
                       subTaskId={subTask.id}
+                      setSubTasks={setSubTasks}
                       />
                   )
               })}
