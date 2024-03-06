@@ -11,7 +11,11 @@ import { Task } from './tasks/tasks.entity';
 import { Project } from './projects/projects.entity';
 import { ConfigService, ConfigModule } from '@nestjs/config'
 import { MailModule } from './mail/mail.module';
+import { SubTaskController } from './sub-task/sub-task.controller';
+import { SubTaskService } from './sub-task/sub-task.service';
+import { SubTaskModule } from './sub-task/sub-task.module';
 import typeorm from './config/typeorm';
+import { TasksService } from './tasks/tasks.service';
 
 @Module({
   imports: [
@@ -27,10 +31,12 @@ import typeorm from './config/typeorm';
     UserModule,
     ProjectsModule,
     AuthModule,
-    MailModule
+    MailModule,
+    SubTaskModule
 ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
 
+//removed SubTaskService from controllers and providers array**

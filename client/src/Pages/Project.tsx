@@ -1,14 +1,19 @@
-import { Box, Text } from "@chakra-ui/react"
+import { Box, Text, useDisclosure } from "@chakra-ui/react"
 import { useLoaderData, useParams } from "react-router-dom";
 import { Project as ProjectType } from './Projects'
 import CreateTasksAccordian from "../components/Proj/CreateTasksAccordian";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+// import TaskCard from "../components/tasks/TaskCard";
+import TaskModal, { SubTask } from "../components/subTasks/TaskModal";
 
 export type Task = {
   name: string;
   status: "ToDo" | "In Progress" | "Completed";
+  description?: string;
   subTasksCount: number;
   completedSubTasksCount: number;
+  id: number;
+  subTasks: SubTask[];
 }
 
 const statusGroups = [
@@ -23,69 +28,20 @@ const statusGroups = [
     }
   ]
 
-  const fakeTasks: Task[] = [
-    {
-      name: "task A",
-      status: 'ToDo',
-      subTasksCount: 10,
-      completedSubTasksCount: 0
-    },
-    {
-      name: "task B",
-      status: 'In Progress',
-      subTasksCount: 13,
-      completedSubTasksCount: 0
-    },
-    {
-      name: "task C",
-      status: 'Completed',
-      subTasksCount: 8,
-      completedSubTasksCount: 3
-    },
-    {
-      name: "task D",
-      status: 'Completed',
-      subTasksCount: 12,
-      completedSubTasksCount: 10
-    },
-    {
-      name: "task E",
-      status: 'ToDo',
-      subTasksCount: 9,
-      completedSubTasksCount: 2
-    },
-    {
-      name: "task F",
-      status: 'ToDo',
-      subTasksCount: 7,
-      completedSubTasksCount: 6
-    },
-    {
-      name: "task G",
-      status: 'ToDo',
-      subTasksCount: 8,
-      completedSubTasksCount: 5
-    },
-    {
-      name: "task H",
-      status: 'In Progress',
-      subTasksCount: 10,
-      completedSubTasksCount: 4
-    },
-  ]
-
 const Project = () => {
-  // const { id } = useParams();
+  const { id } = useParams();
   const data = useLoaderData() as ProjectType[];
   const project = data[0];
   const [tasks, setTasks] = useState(project.tasks)
 
-  // console.log('id: ', id)
-  // console.log('project.id: ', project.id)
-  // console.log('data: ', data)
-  // console.log('project: ', project)
-  console.log(project.tasks)
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const [selectedTask, setSelectedTask] = useState<Task>(tasks[0]);
+
+  const onClickTask = (task: any) => {
+    setSelectedTask(task)
+    onOpen()
+  }
 
   return (
     <Box m={10}>
@@ -108,13 +64,17 @@ const Project = () => {
                     border={"1px solid"}
                     display={"flex"}
                     justifyContent={"space-between"}
-                    _hover={{cursor: "pointer", backgroundColor: "peachpuff"}}
+                    onClick={() => onClickTask(task)}
+                    _hover={ {cursor: "pointer", backgroundColor: "gray.50"}}
+
                     >
                       <Text >{`${task.name}`}</Text>
-                      {/* <Text >{`${task.completedSubTasksCount}/${task.subTasksCount}`}</Text> */}
+                      <Text>{`${task.description}`}</Text>
+                      {/* <Text >{`${task.completedSubTasksCount}/${task.subTasksCount}`}</Text>
+                      {/* <TaskCard taskName={task.name} taskStatus={task.status} description={task.description || "This task has no description."}/> */}
                     </Box>
                   )
-                }
+                } else { return null }
               })}
                 <Box>
                   { group.name === "ToDo" && (
@@ -129,6 +89,14 @@ const Project = () => {
           )
         })}
       </Box>
+      <TaskModal
+        isOpen={isOpen}
+        onClose={onClose}
+        taskName={selectedTask.name}
+        taskDescription={selectedTask.description || "This task has no description"}
+        taskId={selectedTask.id}
+        task={selectedTask}
+        />
     </Box>
   )
 }

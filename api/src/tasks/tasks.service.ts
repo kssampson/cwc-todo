@@ -12,11 +12,10 @@ export class TasksService {
   ) {}
 
   async getProjectTasks(id: number) {
-    return await this.tasksRepository.find({ where : { project: { id } } })
+    return await this.tasksRepository.find({ where : { project: { id } }, relations: ['sub-task'] })
   }
 
   async createTasks(createTasksDto: CreateTasksDto, userId: number) {
-    console.log('createTasksDto in tasks.service: ', createTasksDto)
     const newTask = await this.tasksRepository.save({
       name: createTasksDto.name,
       description: createTasksDto.description,

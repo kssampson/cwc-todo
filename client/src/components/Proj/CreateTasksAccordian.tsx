@@ -38,11 +38,8 @@ const CreateTasksAccordian = ({tasks, setTasks, projectId}: Props) => {
       setIsOpen(false);
       const newTask = {name: name, description: description, projectId: projectId, status: 'ToDo'}
       const token = localStorage.getItem("token");
-      console.log('name: ', name)
-      console.log('description: ', description)
       try {
         const response = await createTask(newTask, token)
-        console.log('response: ', response)
         setTasks(response)
         setName("");
         setDescription("");

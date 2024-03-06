@@ -1,18 +1,16 @@
-import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Button, FormControl, FormErrorMessage, FormLabel, Input, Textarea, useToast} from "@chakra-ui/react";
+import { Accordion, AccordionButton, AccordionItem, AccordionPanel, Box, Button, FormControl, FormErrorMessage, FormLabel, Input, useToast} from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from '@chakra-ui/icons'
 import { useState } from "react";
-import { Project } from "../../Pages/Projects";
-import { Data } from "../../Pages/Profile";
-import createProject from "../../utils/createProject";
-
+import { SubTask } from "./TaskModal";
+import createSubTask from "../../utils/createSubTask";
 
 type Props = {
-  projects: Project[],
-  setProjects: React.Dispatch<React.SetStateAction<Project[]>>,
-  id: number
+  subTasks: SubTask[];
+  setSubTasks: React.Dispatch<React.SetStateAction<SubTask[]>>;
+  taskId: number;
 }
 
-const CreateProjectsAcordian = ({projects, setProjects, id}: Props) => {
+const CreatSubTaskAccordian = ({subTasks, setSubTasks, taskId}: Props) => {
 
   const toast = useToast();
 
@@ -37,16 +35,17 @@ const CreateProjectsAcordian = ({projects, setProjects, id}: Props) => {
 
     if (name !== "") {
       setIsOpen(false);
-      const newProject = {name: name, description: description, id: id, status: 'ToDo'}
+      const newSubTask = {name: name, description: description, taskId: taskId, status: 'ToDo'}
       const token = localStorage.getItem("token");
       try {
-        const response = await createProject(newProject, token)
-        setProjects(response)
+        const response = await createSubTask(newSubTask, token)
+        console.log('respsonse: ', response)
+        setSubTasks(response)
         setName("");
         setDescription("");
         setSubmitClickedName(false);
         toast({
-          title: 'Project creation successful.',
+          title: 'Task creation successful.',
           position: "top-right",
           description: `You're ready todo it with Todoucan!`,
           status: 'success',
@@ -55,7 +54,7 @@ const CreateProjectsAcordian = ({projects, setProjects, id}: Props) => {
         })
       } catch (error) {
         toast({
-          title: 'Error creating project. Please try again.',
+          title: 'Error creating task. Please try again.',
           position: "top-right",
           description: `${error}`,
           status: 'error',
@@ -68,7 +67,7 @@ const CreateProjectsAcordian = ({projects, setProjects, id}: Props) => {
 
 
   return (
-    <Accordion allowToggle index={isOpen ? 0 : 1} flex={1} m={10} >
+    <Accordion allowToggle index={isOpen ? 0 : 1} flex={1} m={10} _hover={{cursor: "pointer"}}>
       <AccordionItem>
         {({ isExpanded }) => (
           <>
@@ -80,34 +79,32 @@ const CreateProjectsAcordian = ({projects, setProjects, id}: Props) => {
                   <AddIcon fontSize='12px' />
                 )}
                 <Box as="span" flex='1' textAlign='left' ml={3} p={2}>
-                  Add a Project
+                  Add a Sub-Task
                 </Box>
               </AccordionButton>
             </h2>
-            <AccordionPanel pb={4} borderLeft={"1px solid"} borderRight={"1px solid"} >
+            <AccordionPanel pb={4} borderLeft={"1px solid"} borderRight={"1px solid"} borderBottom={"1px solid"}>
             <Box>
               <FormControl isRequired isInvalid={isErrorName}>
-                <FormLabel>Project Name:</FormLabel>
+                <FormLabel>Sub-Task Name:</FormLabel>
                 <Input
                 type='text'
                 value={name}
                 onChange={onChangeName}
                 />
-                <FormErrorMessage>Project name is required.</FormErrorMessage>
+                <FormErrorMessage>Sub task name is required.</FormErrorMessage>
               </FormControl>
             </Box>
             <Box>
               <FormControl>
-                <FormLabel>Project Description:</FormLabel>
-                {/* TextArea throwing error, come back and resolve later, use Input for now */}
-                {/* <Textarea value={description} onChange={onChangeDescription}></Textarea> */}
+                <FormLabel>Sub-Task Description:</FormLabel>
                 <Input value={description} onChange={onChangeDescription}></Input>
               </FormControl>
             <Button
             mt={5}
             w={"100%"}
             onClick={onSubmit}
-            >Create
+            >Create Sub-Task
             </Button>
             </Box>
             </AccordionPanel>
@@ -118,4 +115,4 @@ const CreateProjectsAcordian = ({projects, setProjects, id}: Props) => {
   )
 }
 
-export default CreateProjectsAcordian;
+export default CreatSubTaskAccordian;

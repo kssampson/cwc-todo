@@ -10,6 +10,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { AccountDetailsDto } from 'src/user/dto/accountDetailsDto';
 import { CreateProjectsDto } from 'src/projects/dto/createProjectsDto';
 import { CreateTasksDto } from 'src/tasks/dto/createTasksDto';
+import { CreateSubTaskDto } from 'src/sub-task/dto/createSubTaskDto';
+import { DeleteSubTaskDto } from 'src/sub-task/dto/deleteSubTaskDto';
+import { EditSubTaskNameDto } from 'src/sub-task/dto/editSubTaskNameDto';
 
 @Controller('auth')
 export class AuthController {
@@ -91,7 +94,31 @@ export class AuthController {
   @Post('create-tasks')
   async createTasks(@Body() createTasksDto: CreateTasksDto, @Request() req) {
     const user = await this.authService.getProfileData(req.user.email);
-    // console.log('createTasksDto in auth.controler: ', createTasksDto)
     return await this.authService.createTasks(createTasksDto, user.id)
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('create-sub-task')
+  async createSubTask(@Body() createSubTaskDto: CreateSubTaskDto, @Request() req) {
+    const user = await this.authService.getProfileData(req.user.email);
+    return await this.authService.createSubTask(createSubTaskDto, user.id)
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('delete-sub-task')
+  async deleteSubTask(@Body() deleteSubTaskDto: DeleteSubTaskDto, @Request() req) {
+    const user = await this.authService.getProfileData(req.user.email);
+    // console.log('deleteSubTaskDto: ', deleteSubTaskDto)
+    return await this.authService.deleteSubTask(deleteSubTaskDto.taskId, deleteSubTaskDto.subTaskId, user.id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('edit-sub-task-name')
+  async editSubTaskName(@Body() editSubTaskNameDto: EditSubTaskNameDto, @Request() req) {
+    const user = await this.authService.getProfileData(req.user.email);
+    // console.log('editSubTaskNameDto.subTaskId: ', editSubTaskNameDto.subTaskId)
+    // console.log('editSubTaskNameDto.taskId: ', editSubTaskNameDto.taskId)
+
+    return await this.authService.editSubTaskName(editSubTaskNameDto.taskId, editSubTaskNameDto.subTaskId, editSubTaskNameDto.newValue)
   }
 }

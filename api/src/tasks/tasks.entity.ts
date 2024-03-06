@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
 import { Project } from "src/projects/projects.entity";
+import { SubTask } from "src/sub-task/sub-task.entity";
 
 @Entity()
 export class Task {
@@ -17,4 +18,7 @@ export class Task {
 
   @Column( {default: "To Do" })
   status: string;
+
+  @OneToMany(() => SubTask, (subTask) => subTask.task)
+  subTasks: SubTask[];
 }

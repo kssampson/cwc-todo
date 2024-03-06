@@ -12,6 +12,7 @@ import { PassportModule } from '@nestjs/passport';
 import { MailModule } from 'src/mail/mail.module';
 import { ProjectsModule } from 'src/projects/projects.module';
 import { TasksModule } from 'src/tasks/tasks.module';
+import { SubTaskModule } from 'src/sub-task/sub-task.module';
 require('dotenv').config()
 
 @Module({
@@ -20,11 +21,12 @@ require('dotenv').config()
     JwtModule.register({
       global: true,
       secret: `${process.env.JWT_SECRET}`,
-      signOptions: {expiresIn: "190s"},
+      signOptions: {expiresIn: "1h"},
     }),
     UserModule,
     ProjectsModule,
     TasksModule,
+    SubTaskModule,
     PassportModule,
     MailModule
 ],

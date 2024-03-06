@@ -12,12 +12,15 @@ import { ProjectsService } from 'src/projects/projects.service';
 import { CreateProjectsDto } from 'src/projects/dto/createProjectsDto';
 import { CreateTasksDto } from 'src/tasks/dto/createTasksDto';
 import { TasksService } from 'src/tasks/tasks.service';
+import { CreateSubTaskDto } from 'src/sub-task/dto/createSubTaskDto';
+import { SubTaskService } from 'src/sub-task/sub-task.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private projectsService: ProjectsService,
+    private subTaskService: SubTaskService,
     private tasksService: TasksService,
     private mailService: MailService,
     private jwtService: JwtService
@@ -118,5 +121,24 @@ export class AuthService {
     } else {
       throw new UnauthorizedException('Project not found')
     }
+  }
+
+  async createSubTask(createSubTaskDto: CreateSubTaskDto, userId: number) {
+    const projects = await this.projectsService.getUserProjects(userId)
+    const tasks = projects.map((project) => project.tasks)
+    const taskId = tasks[0].filter((task) => task.id === createSubTaskDto.taskId)[0].id;
+    if (taskId) {
+      return await this.subTaskService.createSubTask(createSubTaskDto, taskId)
+    } else {
+      throw new UnauthorizedException('Project not found')
+    }
+  }
+
+  async deleteSubTask(taskId: number, subTaskId: number, userId: number) {
+    return await this.subTaskService.deleteSubTask(taskId, subTaskId)
+  }
+
+  async editSubTaskName(taskId: number, subTaskId, newValue: string) {
+    return await this.subTaskService.editSubTaskName(taskId, subTaskId, newValue);
   }
 }
