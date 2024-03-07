@@ -141,4 +141,9 @@ export class AuthService {
   async editSubTaskName(taskId: number, subTaskId, newValue: string) {
     return await this.subTaskService.editSubTaskName(taskId, subTaskId, newValue);
   }
+
+  async editSubTaskDescription(taskId: number, subTaskId, newValue: string) {
+    return await this.subTaskService.editSubTaskDescription(taskId, subTaskId, newValue);
+  }
+
 }

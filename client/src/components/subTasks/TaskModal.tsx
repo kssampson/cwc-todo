@@ -24,8 +24,6 @@ const TaskModal = ({ isOpen, onClose, taskName, taskDescription, taskId, task }:
 
   const [subTasks, setSubTasks] = useState(task.subTasks);
 
-  // console.log('task: ', task)
-
   useEffect(() => {
     setSubTasks(task.subTasks || [])
   }, [task])
@@ -47,6 +45,7 @@ const TaskModal = ({ isOpen, onClose, taskName, taskDescription, taskId, task }:
                       subTaskDescription={subTask.description || "No description for this sub task"}
                       taskId={taskId}
                       subTaskId={subTask.id}
+                      setSubTasks={setSubTasks}
                       />
                   )
               })}

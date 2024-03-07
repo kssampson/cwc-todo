@@ -1,11 +1,14 @@
 import { Text, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, IconButton, useToast }
  from "@chakra-ui/react";
- import { DeleteIcon, EditIcon} from '@chakra-ui/icons';
+ import { DeleteIcon, EditIcon, AddIcon} from '@chakra-ui/icons';
 // import { SubTask } from "./TaskModal";
 import deleteSubTask from "../../utils/deleteSubTask";
-import onClickEditSubTask from "../../utils/updateSubTask";
+import onClickEditSubTask from "../../utils/updateSubTaskName";
 import { useState } from "react";
 import SubTaskNameDetail from "./SubTaskNameDetail";
+import { SubTask } from "./TaskModal";
+import SubTaskDescriptionDetail from "./SubTaskDescriptionDetail";
+
 
 type Props = {
   subTaskName: string;
@@ -13,21 +16,21 @@ type Props = {
   subTaskDescription: string;
   taskId: number;
   subTaskId: number;
+  setSubTasks: React.Dispatch<React.SetStateAction<SubTask[]>>;
 }
 
-const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, taskId, subTaskId }: Props ) => {
+const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, taskId, subTaskId, setSubTasks }: Props ) => {
 
   const token = localStorage.getItem('token');
   const toast = useToast();
+  const [editNameClicked, setEditNameClicked] = useState<boolean>(false);
+  const [editDescriptionClicked, setEditDescriptionClicked] = useState<boolean>(false);
 
-  const [subTaskDeleted, setSubTaskDeleted] = useState<boolean>(false);
-  const [editClicked, setEditClicked] = useState<boolean>(false);
 
-
-  const oncClickDeleteSubTask = async () => {
+  const onClickDeleteSubTask = async () => {
     try {
       const response = await deleteSubTask(taskId, subTaskId, token)
-      console.log('repsonse for subTaskDelete: ', response)
+      setSubTasks(response);
       toast({
         title: 'Success!',
         position: "top-right",
@@ -56,8 +59,8 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
             <AccordionButton>
                 <SubTaskNameDetail
                 subTaskName={subTaskName}
-                editClicked={editClicked}
-                setEditClicked={setEditClicked}
+                editNameClicked={editNameClicked}
+                setEditNameClicked={setEditNameClicked}
                 subTaskId={subTaskId}
                 taskId={taskId}
                 />
@@ -69,14 +72,41 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
                   background="none"
                   size="sm"
                   _hover={{ color: "gray.50" }}
-                  onClick={oncClickDeleteSubTask}
+                  onClick={onClickDeleteSubTask}
                   >
                 </IconButton>
                 <AccordionIcon />
               </Box>
             </AccordionButton>
           </h2>
-          <AccordionPanel borderTop={"1px"} pb={4}>{subTaskDescription}</AccordionPanel>
+          <AccordionPanel
+          borderTop={"1px"}
+          pb={4}
+          pt={4}
+          >
+            <Box display={"flex"} justifyContent={"space-between"}>
+              <Box>
+                {/* {subTaskDescription} */}
+                <SubTaskDescriptionDetail
+                subTaskDescription={subTaskDescription}
+                editDescriptionClicked={editDescriptionClicked}
+                setEditDescriptionClicked={setEditDescriptionClicked}
+                subTaskId={subTaskId}
+                taskId={taskId}
+                />
+              </Box>
+              <Box>
+                <IconButton
+                  aria-label={"delete icon"}
+                  icon={<AddIcon />}
+                  background="none"
+                  size="sm"
+                  _hover={{ color: "gray.50" }}
+                  >
+                </IconButton>
+              </Box>
+            </Box>
+          </AccordionPanel>
         </Box>
       </AccordionItem>
     </Accordion>

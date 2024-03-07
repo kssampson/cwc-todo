@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types';
 import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import * as sanitizeHtml from 'sanitize-html';
@@ -20,3 +21,5 @@ export class EditSubTaskNameDto {
   @IsString()
   token: string;
 }
+
+export class EditSubTaskDescriptionDto extends PartialType(EditSubTaskNameDto) {}
