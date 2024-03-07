@@ -1,27 +1,26 @@
 import { Box, FormControl,IconButton, Input, Text, useToast } from "@chakra-ui/react";
 import { EditIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons'
 import { useState } from "react";
-import editAccountDetails from "../../utils/editAccountDetails";
-import updateSubTask from "../../utils/updateSubTaskName";
+import updateSubTaskDescription from "../../utils/updateSubTaskDescription";
 
 type Props = {
-  subTaskName: string;
-  editNameClicked: boolean;
-  setEditNameClicked: (value: boolean) => void;
+  subTaskDescription: string;
+  editDescriptionClicked: boolean;
+  setEditDescriptionClicked: (value: boolean) => void;
   subTaskId: number;
   taskId: number;
 }
 
-const SubTaskNameDetail = ( {subTaskName, editNameClicked, setEditNameClicked, subTaskId, taskId}: Props ) => {
+const SubTaskDescriptionDetail = ( {subTaskDescription, editDescriptionClicked, setEditDescriptionClicked, subTaskId, taskId}: Props ) => {
 
-  const [newValue, setNewValue] = useState("");
+  const [newValue, setNewValue] = useState("")
   const [updated, setUpdated] = useState(false);
 
   const toast = useToast();
   const token = localStorage.getItem("token");
 
   const toggleEditField = () => {
-    setEditNameClicked(!editNameClicked);
+    setEditDescriptionClicked(!editDescriptionClicked);
   }
 
   const updateValue = (e: any) => {
@@ -30,7 +29,7 @@ const SubTaskNameDetail = ( {subTaskName, editNameClicked, setEditNameClicked, s
 
   const handleSubmit = async () => {
     try {
-      await updateSubTask(taskId, subTaskId, newValue, token)
+      await updateSubTaskDescription(taskId, subTaskId, newValue, token)
       toast({
         title: 'Edit successful.',
         position: "top-right",
@@ -57,11 +56,9 @@ const SubTaskNameDetail = ( {subTaskName, editNameClicked, setEditNameClicked, s
 
   return (
     <>
-    {!editNameClicked && (
+    {!editDescriptionClicked && (
       <Box display="flex" alignItems={"center"}>
-          {/* <Text flex={1}>{updated ? newValue : `${subTaskName}`}</Text> */}
           <IconButton onClick={(e) => {
-            e.stopPropagation()
             toggleEditField()
             }}
             aria-label={"edit icon"}
@@ -70,10 +67,10 @@ const SubTaskNameDetail = ( {subTaskName, editNameClicked, setEditNameClicked, s
             size="sm"
             >
             </IconButton>
-            <Text flex={1}>{updated ? newValue : `${subTaskName}`}</Text>
+            <Text flex={1}>{updated ? newValue : `${subTaskDescription}`}</Text>
       </Box>
       )}
-      {editNameClicked && (
+      {editDescriptionClicked && (
         <Box display="flex">
             <FormControl flex={1} isRequired>
               <Input
@@ -91,7 +88,6 @@ const SubTaskNameDetail = ( {subTaskName, editNameClicked, setEditNameClicked, s
           ></IconButton>
           <IconButton
           onClick={(e) => {
-            e.stopPropagation()
             toggleEditField()
           }}
           aria-label={"cancel icon"}
@@ -106,4 +102,4 @@ const SubTaskNameDetail = ( {subTaskName, editNameClicked, setEditNameClicked, s
   )
 }
 
-export default SubTaskNameDetail;
+export default SubTaskDescriptionDetail;

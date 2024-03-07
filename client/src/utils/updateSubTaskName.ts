@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const updateSubTask = async (taskId: number, subTaskId: number, newValue: string, token: string | null) => {
+const updateSubTaskName = async (taskId: number, subTaskId: number, newValue: string, token: string | null) => {
   const submissionData = {taskId, subTaskId, newValue, token}
   try {
     const response = await axios.patch('http://localhost:3001/auth/edit-sub-task-name', submissionData, {
@@ -12,4 +12,4 @@ const updateSubTask = async (taskId: number, subTaskId: number, newValue: string
   }
 }
 
-export default updateSubTask;
+export default updateSubTaskName;

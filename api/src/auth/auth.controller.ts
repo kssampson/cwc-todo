@@ -12,7 +12,7 @@ import { CreateProjectsDto } from 'src/projects/dto/createProjectsDto';
 import { CreateTasksDto } from 'src/tasks/dto/createTasksDto';
 import { CreateSubTaskDto } from 'src/sub-task/dto/createSubTaskDto';
 import { DeleteSubTaskDto } from 'src/sub-task/dto/deleteSubTaskDto';
-import { EditSubTaskNameDto } from 'src/sub-task/dto/editSubTaskNameDto';
+import { EditSubTaskDescriptionDto, EditSubTaskNameDto } from 'src/sub-task/dto/editSubTaskNameDto';
 
 @Controller('auth')
 export class AuthController {
@@ -117,5 +117,13 @@ export class AuthController {
     const user = await this.authService.getProfileData(req.user.email);
 
     return await this.authService.editSubTaskName(editSubTaskNameDto.taskId, editSubTaskNameDto.subTaskId, editSubTaskNameDto.newValue)
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('edit-sub-task-description')
+  async editSubTaskDescription(@Body() editSubTaskDescriptionDto: EditSubTaskDescriptionDto, @Request() req) {
+    const user = await this.authService.getProfileData(req.user.email);
+
+    return await this.authService.editSubTaskDescription(editSubTaskDescriptionDto.taskId, editSubTaskDescriptionDto.subTaskId, editSubTaskDescriptionDto.newValue)
   }
 }
