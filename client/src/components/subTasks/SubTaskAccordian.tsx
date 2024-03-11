@@ -52,7 +52,7 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
   }
 
   return (
-    <Accordion allowToggle>
+    <Accordion allowToggle allowMultiple>
         <AccordionItem mt={5} mr={5} ml={5} border={"1px"}>
         <Box>
           <h2>
@@ -85,7 +85,7 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
           pt={4}
           >
             <Box display={"flex"} justifyContent={"space-between"}>
-              <Box>
+              <Box flex={1}>
                 {/* {subTaskDescription} */}
                 <SubTaskDescriptionDetail
                 subTaskDescription={subTaskDescription}
@@ -94,16 +94,6 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
                 subTaskId={subTaskId}
                 taskId={taskId}
                 />
-              </Box>
-              <Box>
-                <IconButton
-                  aria-label={"delete icon"}
-                  icon={<AddIcon />}
-                  background="none"
-                  size="sm"
-                  _hover={{ color: "gray.50" }}
-                  >
-                </IconButton>
               </Box>
             </Box>
           </AccordionPanel>
