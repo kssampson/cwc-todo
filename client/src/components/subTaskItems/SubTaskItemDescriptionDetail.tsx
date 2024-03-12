@@ -1,5 +1,5 @@
-import { Box, FormControl, IconButton, Input, Text, useToast } from "@chakra-ui/react";
-import { EditIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons'
+import { Box, FormControl, IconButton, Input, useToast } from "@chakra-ui/react";
+import { CloseIcon, CheckIcon } from '@chakra-ui/icons'
 import { useState } from "react";
 import updateSubTaskItemDescription from "../../utils/updateSubTaskItemDescription";
 

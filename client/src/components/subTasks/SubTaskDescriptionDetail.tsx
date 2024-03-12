@@ -1,4 +1,4 @@
-import { AbsoluteCenter, AccordionButton, AccordionItem, Box, Divider, FormControl,IconButton, Input, Text, useToast } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Divider, FormControl,IconButton, Input, Text, useToast } from "@chakra-ui/react";
 import { EditIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons'
 import { useState } from "react";
 import updateSubTaskDescription from "../../utils/updateSubTaskDescription";
