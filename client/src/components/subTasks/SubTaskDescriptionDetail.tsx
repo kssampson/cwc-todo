@@ -1,7 +1,8 @@
-import { Box, FormControl,IconButton, Input, Text, useToast } from "@chakra-ui/react";
+import { AbsoluteCenter, Box, Divider, FormControl,IconButton, Input, Text, useToast } from "@chakra-ui/react";
 import { EditIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons'
 import { useState } from "react";
 import updateSubTaskDescription from "../../utils/updateSubTaskDescription";
+import SubTaskItems from "../subTaskItems/SubTaskItems";
 
 type Props = {
   subTaskDescription: string;
@@ -57,20 +58,30 @@ const SubTaskDescriptionDetail = ( {subTaskDescription, editDescriptionClicked, 
   return (
     <>
     {!editDescriptionClicked && (
-      <Box display="flex" alignItems={"center"}>
-          <IconButton onClick={(e) => {
-            toggleEditField()
-            }}
-            aria-label={"edit icon"}
-            icon={<EditIcon />}
-            background="none"
-            size="sm"
-            >
+      <Box display={"flex"} flexDirection={"column"}>
+        <Box display="flex" alignItems={"center"} mb={4}>
+            <IconButton onClick={(e) => {
+              toggleEditField()
+              }}
+              aria-label={"edit icon"}
+              icon={<EditIcon />}
+              background="none"
+              size="sm"
+              >
             </IconButton>
-            <Text flex={1}>{updated ? newValue : `${subTaskDescription}`}</Text>
+              <Text flex={1}>{updated ? newValue : `${subTaskDescription}`}</Text>
+        </Box>
+        <Box position='relative' padding={1}>
+          <Divider pt={2}/>
+          <AbsoluteCenter bg='white' px='4'>
+            To Do
+          </AbsoluteCenter>
+        </Box>
+        <SubTaskItems subTaskId={subTaskId} taskId={taskId}/>
       </Box>
       )}
       {editDescriptionClicked && (
+        <>
         <Box display="flex">
             <FormControl flex={1} isRequired>
               <Input
@@ -97,6 +108,14 @@ const SubTaskDescriptionDetail = ( {subTaskDescription, editDescriptionClicked, 
           _hover={{ color: "red" }}
           ></IconButton>
         </Box>
+        <Box position='relative'>
+          <Divider pt={6}/>
+          <AbsoluteCenter bg='white' px='4'>
+            To Do
+          </AbsoluteCenter>
+        </Box>
+        <SubTaskItems subTaskId={subTaskId} taskId={taskId}/>
+        </>
       )}
       </>
   )

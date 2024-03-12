@@ -1,9 +1,9 @@
 import { Text, Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, IconButton, useToast }
  from "@chakra-ui/react";
- import { DeleteIcon, EditIcon, AddIcon} from '@chakra-ui/icons';
+ import { DeleteIcon} from '@chakra-ui/icons';
 // import { SubTask } from "./TaskModal";
 import deleteSubTask from "../../utils/deleteSubTask";
-import onClickEditSubTask from "../../utils/updateSubTaskName";
+// import onClickEditSubTask from "../../utils/updateSubTaskName";
 import { useState } from "react";
 import SubTaskNameDetail from "./SubTaskNameDetail";
 import { SubTask } from "./TaskModal";
@@ -85,7 +85,7 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
           pt={4}
           >
             <Box display={"flex"} justifyContent={"space-between"}>
-              <Box>
+              <Box flex={1}>
                 {/* {subTaskDescription} */}
                 <SubTaskDescriptionDetail
                 subTaskDescription={subTaskDescription}
@@ -94,16 +94,6 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
                 subTaskId={subTaskId}
                 taskId={taskId}
                 />
-              </Box>
-              <Box>
-                <IconButton
-                  aria-label={"delete icon"}
-                  icon={<AddIcon />}
-                  background="none"
-                  size="sm"
-                  _hover={{ color: "gray.50" }}
-                  >
-                </IconButton>
               </Box>
             </Box>
           </AccordionPanel>
