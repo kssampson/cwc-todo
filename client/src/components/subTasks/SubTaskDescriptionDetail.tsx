@@ -77,7 +77,7 @@ const SubTaskDescriptionDetail = ( {subTaskDescription, editDescriptionClicked, 
             To Do
           </AbsoluteCenter>
         </Box>
-        <SubTaskItems />
+        <SubTaskItems subTaskId={subTaskId} taskId={taskId}/>
       </Box>
       )}
       {editDescriptionClicked && (
@@ -114,7 +114,7 @@ const SubTaskDescriptionDetail = ( {subTaskDescription, editDescriptionClicked, 
             To Do
           </AbsoluteCenter>
         </Box>
-        <SubTaskItems />
+        <SubTaskItems subTaskId={subTaskId} taskId={taskId}/>
         </>
       )}
       </>
