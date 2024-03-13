@@ -14,7 +14,7 @@ export class ProjectsService {
   ) {}
 
   async getUserProjects(id: number) {
-    return await this.projectsRepository.find({ where : { user: { id } }, relations: ['tasks', 'tasks.subTasks'], })
+    return await this.projectsRepository.find({ where : { user: { id } }, relations: ['tasks', 'tasks.subTasks', 'tasks.subTasks.items'], })
   }
 
   async createProject(createProjectsDto: CreateProjectsDto) {

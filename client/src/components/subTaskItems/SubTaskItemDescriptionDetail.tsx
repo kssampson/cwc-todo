@@ -1,18 +1,20 @@
-import { Box, FormControl, IconButton, Input, useToast } from "@chakra-ui/react";
-import { CloseIcon, CheckIcon } from '@chakra-ui/icons'
+import { Box, FormControl, IconButton, Input, useToast, Text } from "@chakra-ui/react";
+import { CloseIcon, CheckIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import { useState } from "react";
 import updateSubTaskItemDescription from "../../utils/updateSubTaskItemDescription";
+import { Item } from "../subTasks/SubTaskAccordian";
 
 type Props = {
-  subTaskItemDescription: string;
-  subTaskItemId: number;
+  subTaskItems: Item[];
+  setSubTaskItems: React.Dispatch<React.SetStateAction<Item[]>>
+  itemId: number;
   editDescriptionClicked: boolean;
   setEditDescriptionClicked: (value: boolean) => void;
   subTaskId: number;
-  taskId: number;
+  setSelectedItem: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const SubTaskItemDescriptionDetail = ( {subTaskItemDescription, subTaskItemId, editDescriptionClicked, setEditDescriptionClicked, subTaskId, taskId}: Props ) => {
+const SubTaskItemDescriptionDetail = ( {subTaskItems, setSubTaskItems, itemId, editDescriptionClicked, setEditDescriptionClicked, subTaskId, setSelectedItem}: Props ) => {
 
   const [newValue, setNewValue] = useState("")
   const [updated, setUpdated] = useState(false);
@@ -30,7 +32,10 @@ const SubTaskItemDescriptionDetail = ( {subTaskItemDescription, subTaskItemId, e
 
   const handleSubmit = async () => {
     try {
-      await updateSubTaskItemDescription(subTaskItemDescription, taskId, subTaskId, subTaskItemId, newValue, token)
+      const response = await updateSubTaskItemDescription(subTaskId, itemId, newValue, token)
+      setSelectedItem(response);
+      setSubTaskItems([...subTaskItems, response])
+      //not seeing the edit. I just added the state and state setter. It is not working as expected but giving a positive message anyway. Check to see if it made it to the db
       toast({
         title: 'Edit successful.',
         position: "top-right",

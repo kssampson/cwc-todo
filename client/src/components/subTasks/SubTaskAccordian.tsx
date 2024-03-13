@@ -17,9 +17,18 @@ type Props = {
   taskId: number;
   subTaskId: number;
   setSubTasks: React.Dispatch<React.SetStateAction<SubTask[]>>;
+  subTask: SubTask;
 }
 
-const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, taskId, subTaskId, setSubTasks }: Props ) => {
+///trying something here....
+export type Item = {
+  id: number;
+  description: string;
+  status: string;
+  subTaskId: number;
+}
+
+const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, taskId, subTaskId, setSubTasks, subTask}: Props ) => {
 
   const token = localStorage.getItem('token');
   const toast = useToast();
@@ -54,7 +63,7 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
   return (
     <Accordion allowToggle>
         <AccordionItem mt={5} mr={5} ml={5} border={"1px"}>
-        <Box>
+        <Box onClick={() => console.log(subTask.items)}>
           <h2>
             <AccordionButton>
                 <SubTaskNameDetail
@@ -93,6 +102,7 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
                 setEditDescriptionClicked={setEditDescriptionClicked}
                 subTaskId={subTaskId}
                 taskId={taskId}
+                subTask={subTask}
                 />
               </Box>
             </Box>

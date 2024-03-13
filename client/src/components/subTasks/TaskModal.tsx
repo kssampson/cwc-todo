@@ -1,5 +1,5 @@
 import { Box, Button, Modal, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Text } from "@chakra-ui/react";
-import SubTaskAccordian from "./SubTaskAccordian";
+import SubTaskAccordian, { Item } from "./SubTaskAccordian";
 import { useEffect, useState } from "react";
 import CreateSubTaskAccordian from "./CreateSubTaskAccordian";
 import { Task } from "../../Pages/Project";
@@ -18,6 +18,7 @@ export type SubTask = {
   description: string | "no description";
   status: string;
   id: number;
+  items: Item[];
 }
 
 const TaskModal = ({ isOpen, onClose, taskName, taskDescription, taskId, task }: Props) => {
@@ -46,6 +47,7 @@ const TaskModal = ({ isOpen, onClose, taskName, taskDescription, taskId, task }:
                       taskId={taskId}
                       subTaskId={subTask.id}
                       setSubTasks={setSubTasks}
+                      subTask={subTask}
                       />
                   )
               })}

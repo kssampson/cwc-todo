@@ -3,6 +3,7 @@ import { EditIcon, CloseIcon, CheckIcon } from '@chakra-ui/icons'
 import { useState } from "react";
 import updateSubTaskDescription from "../../utils/updateSubTaskDescription";
 import SubTaskItems from "../subTaskItems/SubTaskItems";
+import { SubTask } from "./TaskModal";
 
 type Props = {
   subTaskDescription: string;
@@ -10,9 +11,10 @@ type Props = {
   setEditDescriptionClicked: (value: boolean) => void;
   subTaskId: number;
   taskId: number;
+  subTask: SubTask;
 }
 
-const SubTaskDescriptionDetail = ( {subTaskDescription, editDescriptionClicked, setEditDescriptionClicked, subTaskId, taskId}: Props ) => {
+const SubTaskDescriptionDetail = ( {subTaskDescription, editDescriptionClicked, setEditDescriptionClicked, subTaskId, taskId, subTask}: Props ) => {
 
   const [newValue, setNewValue] = useState("")
   const [updated, setUpdated] = useState(false);
@@ -77,7 +79,7 @@ const SubTaskDescriptionDetail = ( {subTaskDescription, editDescriptionClicked, 
             To Do
           </AbsoluteCenter>
         </Box>
-        <SubTaskItems subTaskId={subTaskId} taskId={taskId}/>
+        <SubTaskItems subTaskId={subTaskId} taskId={taskId} subTask={subTask}/>
       </Box>
       )}
       {editDescriptionClicked && (
@@ -114,7 +116,7 @@ const SubTaskDescriptionDetail = ( {subTaskDescription, editDescriptionClicked, 
             To Do
           </AbsoluteCenter>
         </Box>
-        <SubTaskItems subTaskId={subTaskId} taskId={taskId}/>
+        <SubTaskItems subTaskId={subTaskId} taskId={taskId} subTask={subTask}/>
         </>
       )}
       </>

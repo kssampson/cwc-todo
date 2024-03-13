@@ -1,55 +1,30 @@
-import { Box, IconButton, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Button, IconButton, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { EditIcon, DeleteIcon, CheckIcon } from '@chakra-ui/icons'
 import SubTaskItemDescriptionDetail from "./SubTaskItemDescriptionDetail";
+import AddSubTaskItem from "./AddSubTaskItem";
+import { SubTask } from "../subTasks/TaskModal";
 
 type Props = {
   subTaskId: number;
   taskId: number;
+  subTask: SubTask;
 }
 
-const SubTaskItems = ( {subTaskId, taskId}: Props ) => {
+const SubTaskItems = ( {subTaskId, taskId, subTask}: Props ) => {
 
-  const fakeSubTaskItems = [
-    {
-      id: 1,
-      description: "drive to the store",
-      status: 'To Do'
-    },
-    {
-      id: 2,
-      description: "show your costco card",
-      status: 'To Do'
-    },
-    {
-      id: 3,
-      description: "find chicken",
-      status: 'To Do'
-    },
-    {
-      id: 4,
-      description: "search for chips",
-      status: 'To Do'
-    },
-    {
-      id: 5,
-      description: "get apples",
-      status: 'To Do'
-    },
-    {
-      id: 6,
-      description: "locate milk",
-      status: 'To Do'
-    },
-  ]
-
-  const [subTaskItems, setSubTaskItems] = useState(fakeSubTaskItems);
+  const [subTaskItems, setSubTaskItems] = useState(subTask.items);
   const [editDescriptionClicked, setEditDescriptionClicked] = useState<boolean>(false);
   const [selectedItem, setSelectedItem] = useState<number>(0);
+  const [addNewClicked, setAddNewClicked] = useState(false);
 
   const toggleEditField = (id: number) => {
     setSelectedItem(id)
     setEditDescriptionClicked(!editDescriptionClicked);
+  }
+
+  const onClickAddNew = () => {
+    setAddNewClicked(!addNewClicked)
   }
 
   return (
@@ -91,17 +66,31 @@ const SubTaskItems = ( {subTaskId, taskId}: Props ) => {
                 {editDescriptionClicked && selectedItem === item.id && (
                   <>
                     <SubTaskItemDescriptionDetail
-                    subTaskItemDescription={item.description}
-                    subTaskItemId={item.id}
+                    itemId={item.id}
                     editDescriptionClicked={editDescriptionClicked}
                     setEditDescriptionClicked={setEditDescriptionClicked}
-                    subTaskId={subTaskId} taskId={taskId}
+                    subTaskId={subTaskId}
+                    setSelectedItem={setSelectedItem}
+                    subTaskItems={subTaskItems}
+                    setSubTaskItems={setSubTaskItems}
                     />
                   </>
                 )}
               </>
             )
           })}
+          {!addNewClicked && (
+            <Button onClick={onClickAddNew}>Add New To Do</Button>
+          )}
+          {addNewClicked && (
+            <AddSubTaskItem
+            addNewClicked={addNewClicked}
+            setAddNewClicked={setAddNewClicked}
+            subTaskId={subTaskId}
+            subTaskItems={subTaskItems}
+            setSubTaskItems={setSubTaskItems}
+            />
+          )}
         </Box>
       )}
     </>

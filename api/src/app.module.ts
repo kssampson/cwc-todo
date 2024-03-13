@@ -16,6 +16,7 @@ import { SubTaskService } from './sub-task/sub-task.service';
 import { SubTaskModule } from './sub-task/sub-task.module';
 import typeorm from './config/typeorm';
 import { TasksService } from './tasks/tasks.service';
+import { ItemModule } from './item/item.module';
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { TasksService } from './tasks/tasks.service';
     ProjectsModule,
     AuthModule,
     MailModule,
-    SubTaskModule
+    SubTaskModule,
+    ItemModule
 ],
   controllers: [AppController],
   providers: [AppService],
