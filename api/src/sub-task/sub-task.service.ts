@@ -12,7 +12,7 @@ export class SubTaskService {
   ) {}
 
   async getSubTasks(id: number) {
-    return await this.subTaskRepository.find({ where : { task: { id } } })
+    return await this.subTaskRepository.find({ where : { task: { id } }, relations: ['items', 'subTask.items'] })
   }
 
   async createSubTask(createSubTaskDto: CreateSubTaskDto, taskId: number) {

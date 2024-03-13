@@ -13,6 +13,10 @@ import { CreateTasksDto } from 'src/tasks/dto/createTasksDto';
 import { CreateSubTaskDto } from 'src/sub-task/dto/createSubTaskDto';
 import { DeleteSubTaskDto } from 'src/sub-task/dto/deleteSubTaskDto';
 import { EditSubTaskDescriptionDto, EditSubTaskNameDto } from 'src/sub-task/dto/editSubTaskNameDto';
+import { EditItemDto } from 'src/item/dto/editItemDto';
+import { ItemService } from 'src/item/item.service';
+import { CreateItemDto } from 'src/item/dto/createItemDto';
+import { create } from 'domain';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +24,7 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    private itemService: ItemService
     ){}
 
   @UseGuards(LocalAuthGuard)
@@ -125,5 +130,20 @@ export class AuthController {
     const user = await this.authService.getProfileData(req.user.email);
 
     return await this.authService.editSubTaskDescription(editSubTaskDescriptionDto.taskId, editSubTaskDescriptionDto.subTaskId, editSubTaskDescriptionDto.newValue)
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('create-sub-task-item')
+  async createSubTaskItem(@Body() createItemDto: CreateItemDto, @Request() req) {
+    const user = await this.authService.getProfileData(req.user.email);
+    return await this.itemService.createSubTaskItem(createItemDto.description, createItemDto.status, createItemDto.subTaskId, user.id)
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('edit-item-description')
+  async editItemDescription(@Body() editItemDto: EditItemDto, @Request() req) {
+    // console.log(editItemDto)
+    // const user = await this.authService.getProfileData(req.user.email);
+      return await this.itemService.editItemDescription(editItemDto.subTaskId, editItemDto.itemId, editItemDto.newValue);
   }
 }

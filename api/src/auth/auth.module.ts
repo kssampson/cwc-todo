@@ -13,6 +13,7 @@ import { MailModule } from 'src/mail/mail.module';
 import { ProjectsModule } from 'src/projects/projects.module';
 import { TasksModule } from 'src/tasks/tasks.module';
 import { SubTaskModule } from 'src/sub-task/sub-task.module';
+import { ItemModule } from 'src/item/item.module';
 require('dotenv').config()
 
 @Module({
@@ -28,7 +29,8 @@ require('dotenv').config()
     TasksModule,
     SubTaskModule,
     PassportModule,
-    MailModule
+    MailModule,
+    ItemModule
 ],
   providers: [AuthService, UserService, LocalStrategy],
   controllers: [AuthController],
