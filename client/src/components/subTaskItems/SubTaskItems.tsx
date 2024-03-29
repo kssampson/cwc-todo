@@ -1,5 +1,5 @@
 import { Box, Button, IconButton, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { EditIcon, DeleteIcon, CheckIcon } from '@chakra-ui/icons'
 import SubTaskItemDescriptionDetail from "./SubTaskItemDescriptionDetail";
 import AddSubTaskItem from "./AddSubTaskItem";
