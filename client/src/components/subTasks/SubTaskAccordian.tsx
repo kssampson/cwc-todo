@@ -20,7 +20,6 @@ type Props = {
   subTask: SubTask;
 }
 
-///trying something here....
 export type Item = {
   id: number;
   description: string;
