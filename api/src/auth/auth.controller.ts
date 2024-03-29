@@ -40,7 +40,6 @@ export class AuthController {
     return await this.userService.create(createUserDto);
   }
 
-  // @UseGuards(JwtGuard)
   @UseGuards(AuthGuard)
   @Get('profile')
   async getProfileData(@Request() req) {
@@ -84,8 +83,6 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get('project/:id')
   async getProject(@Param('id') id: number, @Request() req) {
-    // console.log('id: ', id)
-    // console.log('req.user', req.user)
     const user = await this.authService.getProfileData(req.user.email);
     return await this.authService.getProject(user.id, id);
   }
