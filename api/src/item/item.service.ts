@@ -16,6 +16,21 @@ export class ItemService {
     return subTaskItems;
   }
 
+  async deleteAllItems(subTaskId: number) {
+    const allItemsForOneSubTask = await this.getSubTaskItems(subTaskId);
+    for (const item of allItemsForOneSubTask) {
+      await this.itemRepository.remove(item)
+    }
+    const items = await this.getSubTaskItems(subTaskId);
+    return items.length ? false : true;
+  }
+
+  async deleteSubTaskItem(subTaskId: number, itemId: number) {
+    const itemToRemove = await this.itemRepository.find({ where: {id: itemId} })
+    await this.itemRepository.remove(itemToRemove);
+    return this.getSubTaskItems(subTaskId);
+  }
+
   async getSubTaskItems(id: number){
     return this.itemRepository.find({ where : { subTask: { id } } })
   }

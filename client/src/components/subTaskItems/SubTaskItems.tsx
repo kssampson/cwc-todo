@@ -1,9 +1,10 @@
-import { Box, Button, IconButton, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { EditIcon, DeleteIcon, CheckIcon } from '@chakra-ui/icons'
+import { Box, Button, IconButton, Text, useToast } from "@chakra-ui/react";
+import { useState } from "react";
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import SubTaskItemDescriptionDetail from "./SubTaskItemDescriptionDetail";
 import AddSubTaskItem from "./AddSubTaskItem";
 import { SubTask } from "../subTasks/TaskModal";
+import DeleteSubTaskItem from "../../utils/deleteSubTaskItem";
 
 type Props = {
   subTaskId: number;
@@ -18,6 +19,8 @@ const SubTaskItems = ( {subTaskId, taskId, subTask}: Props ) => {
   const [selectedItem, setSelectedItem] = useState<number>(0);
   const [addNewClicked, setAddNewClicked] = useState(false);
 
+  const toast = useToast();
+
   const toggleEditField = (id: number) => {
     setSelectedItem(id)
     setEditDescriptionClicked(!editDescriptionClicked);
@@ -25,6 +28,31 @@ const SubTaskItems = ( {subTaskId, taskId, subTask}: Props ) => {
 
   const onClickAddNew = () => {
     setAddNewClicked(!addNewClicked)
+  }
+
+  const handleItemDelete = async (itemId: number) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await DeleteSubTaskItem(subTaskId, itemId, token);
+      setSubTaskItems(response);
+      toast({
+        title: `Success`,
+        position: "top-right",
+        description: `Sub task item has been deleted!`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+    } catch (error) {
+      toast({
+        title: `Error`,
+        position: "top-right",
+        description: `${error}`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+    }
   }
 
   return (
@@ -47,18 +75,11 @@ const SubTaskItems = ( {subTaskId, taskId, subTask}: Props ) => {
                     <Text flex={1} p={1}>{item.description}</Text>
                     <IconButton
                       aria-label={"delete icon"}
-                      icon={<CheckIcon />}
-                      background="none"
-                      size="sm"
-                      _hover={{ color: "gray.50" }}
-                      >
-                    </IconButton>
-                    <IconButton
-                      aria-label={"delete icon"}
                       icon={<DeleteIcon />}
                       background="none"
                       size="sm"
                       _hover={{ color: "gray.50" }}
+                      onClick={() => handleItemDelete(item.id)}
                       >
                     </IconButton>
                   </Box>

@@ -17,6 +17,7 @@ import { EditItemDto } from 'src/item/dto/editItemDto';
 import { ItemService } from 'src/item/item.service';
 import { CreateItemDto } from 'src/item/dto/createItemDto';
 import { create } from 'domain';
+import { DeleteSubTaskItemDto } from 'src/item/dto/deleteSubTaskItemDto';
 
 @Controller('auth')
 export class AuthController {
@@ -39,7 +40,6 @@ export class AuthController {
     return await this.userService.create(createUserDto);
   }
 
-  // @UseGuards(JwtGuard)
   @UseGuards(AuthGuard)
   @Get('profile')
   async getProfileData(@Request() req) {
@@ -83,8 +83,6 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get('project/:id')
   async getProject(@Param('id') id: number, @Request() req) {
-    // console.log('id: ', id)
-    // console.log('req.user', req.user)
     const user = await this.authService.getProfileData(req.user.email);
     return await this.authService.getProject(user.id, id);
   }
@@ -142,8 +140,12 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Patch('edit-item-description')
   async editItemDescription(@Body() editItemDto: EditItemDto, @Request() req) {
-    // console.log(editItemDto)
-    // const user = await this.authService.getProfileData(req.user.email);
       return await this.itemService.editItemDescription(editItemDto.subTaskId, editItemDto.itemId, editItemDto.newValue);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('delete-sub-task-item')
+  async deleteSubTaskItem(@Body() deleteSubTaskItemDto: DeleteSubTaskItemDto) {
+    return this.itemService.deleteSubTaskItem(deleteSubTaskItemDto.subTaskId, deleteSubTaskItemDto.itemId)
   }
 }

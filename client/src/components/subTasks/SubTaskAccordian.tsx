@@ -20,7 +20,6 @@ type Props = {
   subTask: SubTask;
 }
 
-///trying something here....
 export type Item = {
   id: number;
   description: string;
@@ -35,8 +34,9 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
   const [editNameClicked, setEditNameClicked] = useState<boolean>(false);
   const [editDescriptionClicked, setEditDescriptionClicked] = useState<boolean>(false);
 
-
-  const onClickDeleteSubTask = async () => {
+  const onClickDeleteSubTask = async (e: any) => {
+    e.stopPropagation()
+    console.log('delete icon clicked')
     try {
       const response = await deleteSubTask(taskId, subTaskId, token)
       setSubTasks(response);
@@ -63,7 +63,7 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
   return (
     <Accordion allowToggle>
         <AccordionItem mt={5} mr={5} ml={5} border={"1px"}>
-        <Box onClick={() => console.log(subTask.items)}>
+        <Box>
           <h2>
             <AccordionButton>
                 <SubTaskNameDetail
