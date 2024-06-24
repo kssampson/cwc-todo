@@ -39,7 +39,6 @@ const CreatSubTaskAccordian = ({subTasks, setSubTasks, taskId}: Props) => {
       const token = localStorage.getItem("token");
       try {
         const response = await createSubTask(newSubTask, token)
-        console.log('respsonse: ', response)
         setSubTasks(response)
         setName("");
         setDescription("");
