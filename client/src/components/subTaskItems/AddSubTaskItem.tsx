@@ -20,13 +20,11 @@ const AddSubTaskItem = ( {subTaskItems, setSubTaskItems, addNewClicked, setAddNe
   }
 
   const handleSubmit = async () => {
-    // console.log('description: ', description)
     try {
       const token = localStorage.getItem('token');
       const submissionData = {description: description, status: "To Do", subTaskId: subTaskId}
       const response = await createSubTaskItem(submissionData, token)
       setSubTaskItems([...subTaskItems, response])
-      console.log('response from createSubTaskItem: ', response)
     } catch (error) {
       console.log('error in submit!', error)
     }

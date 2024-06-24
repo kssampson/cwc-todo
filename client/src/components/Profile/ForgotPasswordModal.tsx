@@ -35,7 +35,7 @@ const ForgotPasswordModal = ({isOpen, onClose}: Props) => {
     if (validateInputs.isValidEmail(forgotPasswordEmail)) {
       try {
         await resetPassword(forgotPasswordEmail)
-        setForgotPasswordEmail("")
+        setForgotPasswordEmail("");
       } catch (error: any) {
         //if passed dto but not found in database, we will communicate in email sent from backend.
         if (error.response.data.message === 'Email not found!') {

@@ -5,7 +5,6 @@ const editAccountDetails = async (submissionData: object, accessToken: string | 
     const response = await axios.post('http://localhost:3001/auth/edit-account', submissionData, {
       headers: { Authorization: `Bearer ${accessToken}` }
     })
-    console.log('response', response.data)
     return response.data
   } catch (error) {
     console.log('error in editAccountsDetails: ', error)

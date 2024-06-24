@@ -36,7 +36,6 @@ const SubTaskAccordian = ( { subTaskName, subTaskStatus, subTaskDescription, tas
 
   const onClickDeleteSubTask = async (e: any) => {
     e.stopPropagation()
-    console.log('delete icon clicked')
     try {
       const response = await deleteSubTask(taskId, subTaskId, token)
       setSubTasks(response);

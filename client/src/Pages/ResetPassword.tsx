@@ -1,10 +1,14 @@
-import { Box, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, Button } from "@chakra-ui/react";
+import { Box, FormControl, FormErrorMessage, FormLabel, Heading, Input, Stack, VStack, Button, Toast, useToast } from "@chakra-ui/react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { validateInputs } from "../utils/validateInputs";
 import saveResetPassword from "../utils/saveResetPassword";
 
 const ResetPassword = () => {
+
+  const toast = useToast();
+
+  const Navigate = useNavigate();
 
   const { id, token } = useParams();
   let idNum = Number(id);
@@ -29,10 +33,33 @@ const ResetPassword = () => {
   }
 
   const onSubmit = async () => {
-   setPasswordSubmitted(true);
-   setSecondPasswordSubmitted(true);
-   const data = {password: password, id: idNum, token: token}
-   await saveResetPassword(data)
+    try {
+      setPasswordSubmitted(true);
+      setSecondPasswordSubmitted(true);
+      const data = {password: password, id: idNum, token: token}
+      await saveResetPassword(data)
+      setPassword("");
+      setSecondPassword("");
+      toast({
+        title: `Success`,
+        position: "top-right",
+        description: `Password reset successful!`,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      })
+      Navigate('/log-in');
+    } catch (err) {
+      toast({
+        title: `Failure`,
+        position: "top-right",
+        description: `Please try again`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+      Navigate('/log-in');
+    }
   }
 
   return (
